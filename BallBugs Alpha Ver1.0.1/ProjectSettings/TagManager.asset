@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - PlayerCollider
+  - Collectible
+  - Terrain
+  - Projectile
+  - Back
+  - Bug
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Terrain
+  - Water
+  - UI
+  - Background
+  - Projectile
+  - Hazard
+  - Player
+  - Enemy
+  - Shield
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Backdrop
+    uniqueID: 2667527441
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3409745365
+    locked: 0
+  - name: UI
+    uniqueID: 1888019401
+    locked: 0
+  - name: Player
+    uniqueID: 1647913445
+    locked: 0
+  - name: Hazards
+    uniqueID: 2669297097
+    locked: 0
+  - name: Platforms
+    uniqueID: 3422253097
+    locked: 0
+  - name: Collectibles
+    uniqueID: 222669671
+    locked: 0
+  - name: Projectiles
+    uniqueID: 1202923249
+    locked: 0
+  - name: Foreground
+    uniqueID: 3001001797
+    locked: 0

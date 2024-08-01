@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/main menu.unity
+    guid: 563b28948a1204341a067a414f6047d7
+  - enabled: 1
+    path: Assets/Scenes/honey drops.unity
+    guid: 066d8769959b51248a7d4878a747f774
+  - enabled: 1
+    path: Assets/Scenes/local battle.unity
+    guid: 92d339132cf1d63428ee4b7898a11991
+  m_configObjects:
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 8b8fa827a21cfc14bb2d95225f96f1cb, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: ee80318e93005f44da9ed5a963b72bdc, type: 2}
