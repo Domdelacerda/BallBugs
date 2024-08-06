@@ -1,122 +1,88 @@
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a generic bug class that other bugs inherit from
+//-----------------------------------------------------------------------------
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
-using UnityEditor;
-using Unity.VisualScripting;
 
-// Bug is a generic class for all bug classes, containing attributes and methods
-// common among all bugs
-public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealable, IRegenerable, IFrames, IWrappable
+public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, 
+    IHealable, IRegenerable, IFrames, IWrappable
 {
-    // Toggle for slingshot-type shooting controls
-    public bool slingshotControls = true;
+    /// <summary>--------------------------------------------------------------
+    /// Bug contains attributes and methods common among all bugs: stats such
+    /// as the bug's score and health, states such as whether the bug is
+    /// poisoned or reloaded, and actions such as aiming and charging. Bug
+    /// exists so that the more specific bug classes don't have to repeat the
+    /// same code and can instead use inheritance.
+    /// </summary>-------------------------------------------------------------
 
-    // Animator controller for the bug
     public Animator bugAnimator;
-    // The Animator Controller that determines the bug's default animations
     public RuntimeAnimatorController bugController;
 
-    // Bool variable used to determine if the user drew back the joystick to
-    // attack
     public bool shoot = false;
-    // Bool variable used to determine if the bug's attack has recharged or
-    // is still on cooldown
     public bool recharged = false;
-    // Bool variable used to determine if the player can be damaged or not
     public bool invincible = false;
-    // Bool variable that tells us whether the user was just aiming or not
     public bool primed = false;
-    // Bool variable that tells us whether the user is charging up a jump or not
     protected bool chargingJump = false;
-    // Bool variable that tells us whether the user is able to jump or not
     protected bool jumpReady = false;
-    // Bool variable that tells us whether the user fired a shot with slingshot controls
-    // or manual controls
     public bool slingshotMode = false;
-    // Whether the bug is currently wrapped (immobilized) or not
+    public bool slingshotControls = true;
+
     public bool wrapped = false;
-    // Whether the bug is currently poisoned or not
     public bool poisoned = false;
-    // Whether the bug is currently regenerating health or not
     public bool regenerating = false;
 
-    // The maximum amount to health the bug can have
     public int maxHealth = 100;
-    // The amount of health the bug currently has
     public int health = 100;
-    // The amount of damage reduction the bug recives when taking damage
     public float armor = 0f;
-    // The amount of damage reduction the bug recieves when their shield is hit
     public float shieldArmor = 0f;
 
-    // The bug's current score for scored game modes
     public int score = 0;
     
-    // Float variable used to determine the amount of time it takes for the
-    // bug's attack to recharge after attacking
     public float cooldownTime = 3f;
-    // Float varaible used for keeping track of how long the user has held
-    // back the attack joystick, which changes the attack's properties
     public float currentCharge = 0f;
-    // Float variable used for incrementing current charge each frame that
-    // both the shoot joystick is held down and recharged is true
-    public float chargeRate = 0.0008f;
-
-    // The combo counter for consecutive shots
+    public float chargeRate = 0.25f;
     public int comboCounter = 0;
 
-    // Rigidbody attached to the bug
     public Rigidbody2D rb;
-
-    // The healthbar used for displaying the bug's health and current charge
-    public GameObject healthBarCanvas;
-    // The text used for displaying the bug's score
-    public TextMeshProUGUI scoreText;
-    // The damage display prefab
-    public GameObject damageDisplay;
-    // The heal display prefab
-    public GameObject healDisplay;
-    // The shield display prefab
-    public GameObject shieldDisplay;
-    // The poison display prefab
-    public GameObject poisonDisplay;
-    // The secondary damage-dealing hitbox
     public GameObject persistentHitbox;
 
-    // The flashing speed of the invincibility frames
-    private const float flashInterval = 0.075f;
+    public GameObject healthBarCanvas;
+    public TextMeshProUGUI scoreText;
 
-    // How far back the joystick is drawn
+    public GameObject damageDisplay;
+    public GameObject healDisplay;
+    public GameObject shieldDisplay;
+    public GameObject poisonDisplay;
+
+    private const float FLASH_INTERVAL = 0.075f;
+
     public Vector2 joystickDraw;
-    // Save states for the joystick's last positions, up to 3 frames earlier
     public Vector2[] joystickDrawSaveStates = new Vector2[3];
 
-    // The playerLayer int represents the layer that all player characters exist on
-    protected const int playerLayer = 9;
-    // The enemy layer int represents the layer that all enemy characters exist on
-    protected const int enemyLayer = 10;
-    // The shield layer int represents the layer that all shields exist on
-    protected const int shieldLayer = 11;
-    // The defualt layer the bug is on at the start of the game
+    protected const int PLAYER_LAYER = 9;
+    protected const int ENEMY_LAYER = 10;
+    protected const int SHIELD_LAYER = 11;
     public int defaultLayer;
 
-    // The spring joint used for grappling onto walls
     public SpringJoint2D grapple;
-    // The point where the current web is connected to
     public Vector2 grapplePos;
-    // The current web the spider is swinging from
     public GameObject currentWeb;
-    // Distance between the bug and the current web
     protected Vector2 distance;
 
     protected Coroutine rechargeRoutine;
     protected Coroutine poisonRoutine;
     protected Coroutine regenRoutine;
 
-    // Start is called on the first frame
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
+
     void Start()
     {
         defaultLayer = gameObject.layer;
@@ -124,6 +90,18 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealab
         rechargeRoutine = StartCoroutine(Recharge());
     }
 
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Set the player's aiming direction to the same direction that the aiming
+    /// joystick is drawn back every frame, unless the player is currently
+    /// immobilized.
+    /// </summary>
+    /// <param name="ctx">the action input that determines the direction the
+    /// joystick is pulled in.</param>
+    /// -----------------------------------------------------------------------
     public void OnAim(InputAction.CallbackContext ctx)
     {
         if (wrapped == false)
@@ -132,6 +110,13 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealab
         }
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Allow the player to attack when the attack button is pressed as long as
+    /// they aren't currently immobilized.
+    /// </summary>
+    /// <param name="ctx">the action input that determines whether the player
+    /// used the attack input or not.</param>
+    /// -----------------------------------------------------------------------
     public void OnAttack(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && wrapped == false)
@@ -140,23 +125,43 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealab
         }
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Allow the player to jump when the jump button is pressed as long as
+    /// they aren't currently immobilized.
+    /// </summary>
+    /// <param name="ctx">the action input that determines whether the player
+    /// used the jump input or not.</param>
+    /// -----------------------------------------------------------------------
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && wrapped == false)
         {
             Ungrapple();
         }
         chargingJump = ctx.performed;
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Allow the player to crouch when the crouch button is pressed as long as
+    /// they aren't currently immobilized.
+    /// </summary>
+    /// <param name="ctx">the action input that determines whether the player
+    /// used the crouch input or not.</param>
+    /// -----------------------------------------------------------------------
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && wrapped == false)
         {
             Ungrapple();
         }
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Allow the player to pause the game when a pause button is pressed.
+    /// </summary>
+    /// <param name="ctx">the action input that determines whether the player
+    /// used the pause input or not.</param>
+    /// -----------------------------------------------------------------------
     public void OnPause(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
@@ -230,7 +235,13 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealab
         rb.velocity = newVelocity;
     }
 
-    // Implmentation for damage interface
+    /// <summary>----------------------------------------------------------
+    /// Determines whether or not a point in space overlaps the ball based
+    /// on the position of its center and the size of its sprite
+    /// </summary>
+    /// <param name="point">the point to be checked.</param>
+    /// <returns>whether or not the point overlaps the ball.</returns>
+    /// -------------------------------------------------------------------
     public int Damage(int damageTaken)
     {
         int damage = 0;
@@ -422,7 +433,7 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealab
         if (invincible == false)
         {
             invincible = true;
-            StartCoroutine(Flash(seconds, flashInterval));
+            StartCoroutine(Flash(seconds, FLASH_INTERVAL));
             StartCoroutine(Invincible(seconds));
         }
     }
@@ -509,7 +520,7 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable, IHealab
 
     void OnDestroy()
     {
-        if (defaultLayer == playerLayer)
+        if (defaultLayer == PLAYER_LAYER)
         {
             SharedData.currentPlayers -= 1;
         }

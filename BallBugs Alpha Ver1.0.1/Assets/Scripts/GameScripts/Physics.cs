@@ -1,46 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a consistent physics system applied to the game scene
+//-----------------------------------------------------------------------------
+
 using UnityEngine;
 
 public class Physics : MonoBehaviour
 {
-    // This is the distance that the camera should move to switch between levels
-    private const int DISTANCE_BETWEEN_LEVELS = 24;
-    // This is the distance that the camera starts at by default
-    private const int STARTING_POINT = 12;
-    // The number of levels currently in the game
-    private const int NUM_LEVELS = 4;
+    /// <summary>--------------------------------------------------------------
+    /// Physics determines which layers are able to collide with each other in
+    /// the games scenes it is placed in. It also controls the flow of time,
+    /// allowing the game's update rate to be slowed down, stopped completely,
+    /// or resumed at any time.
+    /// </summary>-------------------------------------------------------------
+    
+    private const int PROJECTILE_LAYER = 7;
+    private const int HAZARD_LAYER = 8;
+    private const float DEFAULT_DELTA_TIME = 0.02f;
 
-    // The default value for delta time - should be 0.02
-    // Messing around with this makes the framerate smoother but also ruins a
-    // lot of physics calculations - Use with caution
-    private const float defaultDeltaTime = 0.02f;
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Reset the time and delta time
         Time.timeScale = 1;
-        Time.fixedDeltaTime = defaultDeltaTime;
-        // The line below disables collision between projectiles and other projectiles
-        Physics2D.IgnoreLayerCollision(7, 7);
-        // The line below disables collision between projectiles and hazards
-        Physics2D.IgnoreLayerCollision(7, 8);
-        // The line below disables collision between projectiles and players
-        // Physics2D.IgnoreLayerCollision(7, 9);
+        Time.fixedDeltaTime = DEFAULT_DELTA_TIME;
+        Physics2D.IgnoreLayerCollision(PROJECTILE_LAYER, PROJECTILE_LAYER);
+        Physics2D.IgnoreLayerCollision(PROJECTILE_LAYER, HAZARD_LAYER);
     }
 
-    // Pause time
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Pauses all physics and gameplay input so that the player can stop
+    /// playing the game if need be
+    /// </summary>-------------------------------------------------------------
     public void Pause()
     {
         Time.timeScale = 0;
         Time.fixedDeltaTime = 0;
     }
 
-    // Resume time
+    /// <summary>--------------------------------------------------------------
+    /// Resumes all physics and gameplay input so that the player can continue
+    /// playing the game after pausing
+    /// </summary>-------------------------------------------------------------
     public void Play()
     {
         Time.timeScale = 1;
-        Time.fixedDeltaTime = defaultDeltaTime;
+        Time.fixedDeltaTime = DEFAULT_DELTA_TIME;
     }
 }

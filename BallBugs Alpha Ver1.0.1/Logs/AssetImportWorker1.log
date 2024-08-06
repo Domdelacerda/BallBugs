@@ -261,3 +261,174 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  4.225 seconds
+Refreshing native plugins compatible for Editor in 28.29 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for iOS target not found
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+- Finished resetting the current domain, in 12.311 seconds
+Domain Reload Profiling: 16532ms
+	BeginReloadAssembly (729ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (82ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (1ms)
+		CreateAndSetChildDomain (309ms)
+	RebuildCommonClasses (46ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (65ms)
+	LoadAllAssembliesAndSetupDomain (3370ms)
+		LoadAssemblies (3495ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (110ms)
+			TypeCache.Refresh (41ms)
+				TypeCache.ScanAssembly (3ms)
+			ScanForSourceGeneratedMonoScriptInfo (29ms)
+			ResolveRequiredComponents (38ms)
+	FinalizeReload (12312ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (712ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (35ms)
+			SetLoadedEditorAssemblies (16ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (123ms)
+			ProcessInitializeOnLoadAttributes (475ms)
+			ProcessInitializeOnLoadMethodAttributes (50ms)
+			AfterProcessingInitializeOnLoad (11ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (14ms)
+Refreshing native plugins compatible for Editor in 28.71 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4897 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 52 unused Assets / (114.2 KB). Loaded Objects now: 5402.
+Memory consumption went from 153.8 MB to 153.7 MB.
+Total: 12.030700 ms (FindLiveObjects: 0.943900 ms CreateObjectMapping: 0.241500 ms MarkObjects: 10.706300 ms  DeleteObjects: 0.137300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 258279.860211 seconds.
+  path: Assets/InputSystem.inputsettings.asset
+  artifactKey: Guid(ee80318e93005f44da9ed5a963b72bdc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/InputSystem.inputsettings.asset using Guid(ee80318e93005f44da9ed5a963b72bdc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e90a63ebab73da7e30c8be06a5454128') in 0.653006 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 26.561013 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/BombardierBeetle.prefab
+  artifactKey: Guid(b547fdeccfbe95d46a249ba4186277b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/BombardierBeetle.prefab using Guid(b547fdeccfbe95d46a249ba4186277b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '18268698e90ba4072d580c7e4344273a') in 1.685823 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 144
+========================================================================
+Received Import Request.
+  Time since last request: 0.000043 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Ladybug.prefab
+  artifactKey: Guid(018dba3091ea87741a981a1bd9102b5c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Ladybug.prefab using Guid(018dba3091ea87741a981a1bd9102b5c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '51f73f90fcc49e0531ea3f9181228687') in 0.164513 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 143
+========================================================================
+Received Import Request.
+  Time since last request: 0.000079 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Glowworm.prefab
+  artifactKey: Guid(d9d96fd762c0e5d498542a2248f7a433) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Glowworm.prefab using Guid(d9d96fd762c0e5d498542a2248f7a433) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c41d63ef7887bf148578abc8b4c3c98') in 0.529626 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 216
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Spider.prefab
+  artifactKey: Guid(ab532e5167e94004a8194b6315bd6ded) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Spider.prefab using Guid(ab532e5167e94004a8194b6315bd6ded) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '54fb16fa0f1c41ad98aab26b82011f13') in 0.190304 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 153
+========================================================================
+Received Import Request.
+  Time since last request: 0.000042 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Locust.prefab
+  artifactKey: Guid(86c90f5336a7fb141b4031bcf2fab46e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Locust.prefab using Guid(86c90f5336a7fb141b4031bcf2fab46e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '144e817b79f19876599d98eadc5e05cd') in 0.146453 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 157
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Megabug.prefab
+  artifactKey: Guid(e43bc95a255d12447b0ead3558d8ac14) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Megabug.prefab using Guid(e43bc95a255d12447b0ead3558d8ac14) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a52aa96e4220c5fb8115c42b8cc8b8c6') in 0.062929 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 124
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Bug.prefab
+  artifactKey: Guid(d0b7486080dfc074c90ba8e5ffec0423) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Bug.prefab using Guid(d0b7486080dfc074c90ba8e5ffec0423) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c85cc028908de3c184a4f987dda6c40') in 0.089288 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 124
+========================================================================
+Received Import Request.
+  Time since last request: 0.000043 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Lightningbug.prefab
+  artifactKey: Guid(ec2c3fe4259d1fb4094273d1371792a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Lightningbug.prefab using Guid(ec2c3fe4259d1fb4094273d1371792a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1e35a0b2ab0fcff16ab4786073ef66e') in 0.423364 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 204
+========================================================================
+Received Import Request.
+  Time since last request: 0.000106 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Rolypoly.prefab
+  artifactKey: Guid(d5d6295f1fcdfd14fa3cf3a098536504) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Rolypoly.prefab using Guid(d5d6295f1fcdfd14fa3cf3a098536504) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '753ef1648ae929c3efdedc8ea78609c1') in 0.199817 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 153
+========================================================================
+Received Import Request.
+  Time since last request: 0.000055 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Dummybug.prefab
+  artifactKey: Guid(ee5c3e9fc5b683745a410d929088c351) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Dummybug.prefab using Guid(ee5c3e9fc5b683745a410d929088c351) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b80ab74a21a7af90961a59c328707773') in 0.093207 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 120
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Isopod.prefab
+  artifactKey: Guid(13948d193497d4a4497565a294cc923d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Isopod.prefab using Guid(13948d193497d4a4497565a294cc923d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ca178c9bf113c6d1fd784d371345b12') in 0.280589 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 153
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: The I/O operation has been aborted because of either a thread exit or an application request.
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
