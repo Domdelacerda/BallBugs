@@ -13,8 +13,6 @@ public class SpiderWeb : Projectile
     public float wrappedTime = 1f;
     // The force with which the enemy is reeled in towards the spider
     public float reelPower = 1f;
-    // Save state for the charge of the web when fired
-    private float charge;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +31,6 @@ public class SpiderWeb : Projectile
             rb.velocity = transform.up * speed * owner.GetComponent<Bug>().currentCharge * owner.GetComponent<Bug>().joystickDraw.magnitude;
         }
         // Reset bug's charge to zero
-        charge = owner.GetComponent<Bug>().currentCharge;
         owner.GetComponent<Bug>().currentCharge -= 1f / numProjectiles;
     }
 

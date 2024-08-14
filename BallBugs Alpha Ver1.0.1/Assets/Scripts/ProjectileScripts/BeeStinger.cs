@@ -20,6 +20,8 @@ public class BeeStinger : Projectile
     public int numPoisonIntervals = 0;
     public bool toxic = false;
     public bool shieldPiercing = false;
+    public bool tacticalReload = false;
+    public bool superTacticalReload = false;
 
     // Start is called before the first frame update
     void Start()
@@ -79,16 +81,24 @@ public class BeeStinger : Projectile
     void Update()
     {
         // Tactical reload
-        if (Physics2D.OverlapCircle(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), stingerSize, LayerMask.GetMask("Player")))
+        if (tacticalReload == true)
         {
-            // If the bug is currently reloading, stop it from doing so
-            owner.GetComponent<Bug>().StopRecharge();
-            owner.GetComponent<Bug>().recharged = true;
-            if (owner.GetComponent<Bug>().bugAnimator != null)
+            if (Physics2D.OverlapCircle(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), 
+                stingerSize, owner.GetComponent<Bug>().defaultLayer))
             {
-                owner.GetComponent<Bug>().bugAnimator.SetBool("IsRecharged", true);
+                // If the bug is currently reloading, stop it from doing so
+                owner.GetComponent<Bug>().StopRecharge();
+                owner.GetComponent<Bug>().recharged = true;
+                if (superTacticalReload == true)
+                {
+                    owner.GetComponent<Bug>().currentCharge += charge;
+                }
+                if (owner.GetComponent<Bug>().bugAnimator != null)
+                {
+                    owner.GetComponent<Bug>().bugAnimator.SetBool("IsRecharged", true);
+                }
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
         }
     }
 

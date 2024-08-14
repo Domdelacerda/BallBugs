@@ -1,46 +1,54 @@
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a ladybug class that is fun to play
+//-----------------------------------------------------------------------------
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ladybug : Bug, ISlingshot
 {
-    // The segment count for the line renderer component
+    /// <summary>--------------------------------------------------------------
+    /// Ladybug is one of the player characters in the game. Ladybug is an
+    /// all-rounder class that fires multiple spot projectiles in quick
+    /// succession. The charge meter determines the number of projectiles
+    /// fired per burst, 1 at a minumum and 5 at a maximum.
+    /// </summary>-------------------------------------------------------------
+
+    public LineRenderer Trajectory;
     public int segmentCount;
 
-    // The point at which the projectile is fired
     public Transform firePoint;
-    // The prefab for the projectile to be instantiated
     public GameObject spotPrefab;
 
-    // The delay between firing multiple shots
     public float shotDelay = 0.1f;
 
-    // The trajectory LineRenderer that is used for aiming
-    public LineRenderer Trajectory;
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
 
-    // Update executes every frame
     void Update()
     {
-        // Slingshot shooting controls (on joystick release)
-        if (joystickDraw.magnitude == 0f && recharged == true && primed == true && slingshotControls == true && wrapped == false)
+        if (joystickDraw.magnitude == 0f && recharged == true && primed == true
+            && slingshotControls == true && wrapped == false)
         {
             slingshotMode = true;
             Sling();
             StartCoroutine(Delay());
             Release();
         }
-        // If the joystick is not centered (if it is being pulled back)
-        else if (joystickDraw.magnitude != 0f && recharged == true && wrapped == false)
+        else if (joystickDraw.magnitude != 0f && recharged == true && 
+            wrapped == false)
         {
             ChargingUp(true);
-            CalculateTrajectory(currentCharge);
+            CalculateTrajectory();
             SetTrajectoryActive(true);
             for (int i = joystickDrawSaveStates.Length - 1; i > 0; i--)
             {
                 joystickDrawSaveStates[i] = joystickDrawSaveStates[i - 1];
             }
             joystickDrawSaveStates[0] = joystickDraw;
-            // Manual shooting controls (on button press)
             if (recharged == true && shoot == true)
             {
                 slingshotMode = false;
@@ -61,7 +69,30 @@ public class Ladybug : Bug, ISlingshot
         shoot = false;
     }
 
-    // Delays shots by a specified number of seconds
+    //-------------------------------------------------------------------------
+    // INTERFACE IMPLEMENTATIONS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Creates a new instance of the spot prefab and fires it.
+    /// </summary>-------------------------------------------------------------
+    public void Sling()
+    {
+        GameObject spot = Instantiate(spotPrefab, firePoint.position,
+            firePoint.rotation);
+        spot.GetComponent<Projectile>().owner = gameObject;
+    }
+
+    //-------------------------------------------------------------------------
+    // COROUTINES
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Perform a short time dellay between shots, then if enough charge is
+    /// left, fire another shot and start the delay again.
+    /// </summary>
+    /// <returns>coroutine that executes shot delay event.</returns>
+    /// -----------------------------------------------------------------------
     IEnumerator Delay()
     {
         yield return new WaitForSeconds(shotDelay);
@@ -72,35 +103,41 @@ public class Ladybug : Bug, ISlingshot
         }
     }
 
-    // Implementation for the sling interface
-    public void Sling()
-    {
-        // New instance of spot prefab is created and fired
-        GameObject spot = Instantiate(spotPrefab, firePoint.position, firePoint.rotation);
-        spot.GetComponent<Projectile>().owner = gameObject;
-    }
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
 
-    // Credit for SetVisualizerActive goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
+    /// <summary>--------------------------------------------------------------
+    /// Enables or disables the trajectory visualizer to see where a shot is 
+    /// going to be fired.
+    /// </summary>
+    /// <param name="active">whether the visualizer is being enabled or 
+    /// disabled.</param>
+    /// -----------------------------------------------------------------------
     void SetTrajectoryActive(bool active)
     {
         Trajectory.enabled = active;
     }
 
-    // Credit for ShowTrajectory goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
-    void CalculateTrajectory(float charge)
+    /// <summary>--------------------------------------------------------------
+    /// Calculates the new trajectory based on the position and rotation of
+    /// ladybug. 
+    /// Credit for CalculateTrajectory goes to NightShade on youtube: 
+    /// https://youtu.be/kRgFiCjdLpY
+    /// </summary>-------------------------------------------------------------
+    void CalculateTrajectory()
     {
         Vector2[] segments = new Vector2[segmentCount];
         segments[0] = firePoint.position;
-        // For some reason, the drag value in the drag equation is the cube root of the bullet's actual drag
-        // 0.421875^(1/3) = 0.75
-        // NOTE: Tested this with other values; does not work. Just enter random shit until the projectile follows the trajectory
         float drag = (1.0f - 0.75f * Time.fixedDeltaTime);
-        Vector2 segVelocity = new Vector2(joystickDraw.x, joystickDraw.y) * -spotPrefab.GetComponent<Projectile>().speed;
+        Vector2 segVelocity = new Vector2(joystickDraw.x, joystickDraw.y) 
+            * -spotPrefab.GetComponent<Projectile>().speed;
         for (int i = 1; i < segmentCount; i++)
         {
             float timeCurve = (i * Time.fixedDeltaTime * 5.0f);
             segVelocity *= drag;
-            segments[i] = segments[0] + segVelocity * timeCurve + 0.5f * Physics2D.gravity * Mathf.Pow(timeCurve, 2);
+            segments[i] = segments[0] + segVelocity * timeCurve + 0.5f 
+                * Physics2D.gravity * Mathf.Pow(timeCurve, 2);
         }
         Trajectory.positionCount = segmentCount;
         for (int j = 0; j < segmentCount; j++)

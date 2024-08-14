@@ -1,32 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a bee class that is fun to play
+//-----------------------------------------------------------------------------
+
 using UnityEngine;
 
 public class Bee : Bug, ISlingshot
 {
-    // The segment count for the line renderer component
+    /// <summary>--------------------------------------------------------------
+    /// Bee is one of the player characters in the game. Bee is a sniper class
+    /// capable of firing a single stinger projectile. The charge meter
+    /// determines the speed at which the stinger is fired.
+    /// </summary>-------------------------------------------------------------
+
+    public LineRenderer trajectory;
     public int segmentCount;
 
-    // The point at which the projectile is fired
     public Transform firePoint;
-    // The prefab for the projectile to be instantiated
     public GameObject stingerPrefab;
 
-    // The trajectory LineRenderer that is used for aiming
-    public LineRenderer Trajectory;
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
 
-    // Update executes every frame
     void Update()
     {
-        // Slingshot shooting controls (on joystick release)
-        if (joystickDraw.magnitude == 0f && recharged == true && primed == true && slingshotControls == true && wrapped == false)
+        if (joystickDraw.magnitude == 0f && recharged == true && primed == true
+            && slingshotControls == true && wrapped == false)
         {
             slingshotMode = true;
             Sling();
             Release();
         }
-        // If the joystick is not centered (if it is being pulled back)
-        else if (joystickDraw.magnitude != 0f && recharged == true && wrapped == false)
+        else if (joystickDraw.magnitude != 0f && recharged == true && 
+            wrapped == false)
         {
             ChargingUp(true);
             CalculateTrajectory(currentCharge);
@@ -36,7 +44,6 @@ public class Bee : Bug, ISlingshot
                 joystickDrawSaveStates[i] = joystickDrawSaveStates[i - 1];
             }
             joystickDrawSaveStates[0] = joystickDraw;
-            // Manual shooting controls (on button press)
             if (shoot == true)
             {
                 slingshotMode = false;
@@ -47,46 +54,73 @@ public class Bee : Bug, ISlingshot
         else
         {
             SetTrajectoryActive(false);
-            currentCharge = 0f;
+            if (currentCharge < 0)
+            {
+                currentCharge = 0;
+            }
         }
         shoot = false;
     }
 
-    // Implementation for the sling interface
+    //-------------------------------------------------------------------------
+    // INTERFACE IMPLEMENTATIONS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Creates a new instance of the stinger prefab and fires it.
+    /// </summary>-------------------------------------------------------------
     public void Sling()
     {
-        // New instance of stinger prefab is created and fired
-        GameObject stinger = Instantiate(stingerPrefab, firePoint.position, firePoint.rotation);
+        GameObject stinger = Instantiate(stingerPrefab, firePoint.position, 
+            firePoint.rotation);
         stinger.GetComponent<Projectile>().owner = gameObject;
+        stinger.GetComponent<Projectile>().charge = currentCharge;
     }
 
-    // Credit for SetVisualizerActive goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Enables or disables the trajectory visualizer to see where a shot is 
+    /// going to be fired.
+    /// </summary>
+    /// <param name="active">whether the visualizer is being enabled or 
+    /// disabled.</param>
+    /// -----------------------------------------------------------------------
     void SetTrajectoryActive(bool active)
     {
-        Trajectory.enabled = active;
+        trajectory.enabled = active;
     }
 
-    // Credit for ShowTrajectory goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
+    /// <summary>--------------------------------------------------------------
+    /// Calculates the new trajectory based on the position, rotation, and 
+    /// current charge of bee. 
+    /// Credit for CalculateTrajectory goes to NightShade on youtube: 
+    /// https://youtu.be/kRgFiCjdLpY
+    /// </summary>
+    /// <param name="charge">the current charge of bee.</param>
+    /// -----------------------------------------------------------------------
     void CalculateTrajectory(float charge)
     {
         Vector2[] segments = new Vector2[segmentCount];
         segments[0] = firePoint.position;
-        // For some reason, the drag value in the drag equation is the cube root of the bullet's actual drag
-        // 0.421875^(1/3) = 0.75
-        // NOTE: Tested this with other values; does not work. Just enter random shit until the projectile follows the trajectory
-        // float drag = (1.0f - 0.75f * Time.fixedDeltaTime);
-        float drag = (1.0f - Mathf.Pow(stingerPrefab.GetComponent<Rigidbody2D>().drag, 1f/3f) * Time.fixedDeltaTime);
-        Vector2 segVelocity = new Vector2(joystickDraw.x, joystickDraw.y) * charge * -stingerPrefab.GetComponent<Projectile>().speed;
+        float drag = (1.0f - Mathf.Pow(
+            stingerPrefab.GetComponent<Rigidbody2D>().drag, 1f/3f)
+            * Time.fixedDeltaTime);
+        Vector2 segVelocity = new Vector2(joystickDraw.x, joystickDraw.y)
+            * charge * -stingerPrefab.GetComponent<Projectile>().speed;
         for (int i = 1; i < segmentCount; i++)
         {
             float timeCurve = (i * Time.fixedDeltaTime * 5.0f);
             segVelocity *= drag;
-            segments[i] = segments[0] + segVelocity * timeCurve + 0.5f * Physics2D.gravity * Mathf.Pow(timeCurve, 2);
+            segments[i] = segments[0] + segVelocity * timeCurve + 0.5f
+                * Physics2D.gravity * Mathf.Pow(timeCurve, 2);
         }
-        Trajectory.positionCount = segmentCount;
+        trajectory.positionCount = segmentCount;
         for (int j = 0; j < segmentCount; j++)
         {
-            Trajectory.SetPosition(j, segments[j]);
+            trajectory.SetPosition(j, segments[j]);
         }
     }
 }

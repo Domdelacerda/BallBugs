@@ -60,7 +60,7 @@ public class Snail : Bug, ISlingshot
         slimeball.GetComponent<Projectile>().owner = gameObject;
         if (withdrawal == true)
         {
-            gameObject.layer = shieldLayer;
+            gameObject.layer = SHIELD_LAYER;
         }
     }
 

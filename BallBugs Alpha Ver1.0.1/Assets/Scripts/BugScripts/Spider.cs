@@ -84,6 +84,7 @@ public class Spider : Bug, ISlingshot
         // New instance of stinger prefab is created and fired
         GameObject web = Instantiate(webPrefab, firePoint.position, firePoint.rotation);
         web.GetComponent<Projectile>().owner = gameObject;
+        web.GetComponent<Projectile>().charge = currentCharge;
     }
 
     // Credit for SetVisualizerActive goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
@@ -115,36 +116,4 @@ public class Spider : Bug, ISlingshot
             Trajectory.SetPosition(j, segments[j]);
         }
     }
-
-    /*
-    public void Grapple(Vector2 grapplePoint)
-    {
-        grapple.enabled = true;
-        grapplePos = grapplePoint;
-        grapple.connectedAnchor = grapplePoint;
-        distance = new Vector2(grapplePoint.x - gameObject.transform.position.x, grapplePoint.y - gameObject.transform.position.y);
-        grapple.distance = distance.magnitude;
-    }
-
-    public void UpdateGrapple(Vector2 grapplePoint, GameObject web)
-    {
-        if (grapple.enabled == true && currentWeb == web)
-        {
-            grapplePos = grapplePoint;
-            grapple.connectedAnchor = grapplePoint;
-        }
-    }
-
-    public void Ungrapple()
-    {
-        grapple.enabled = false;
-        Destroy(currentWeb);
-    }
-
-    public void OnDestroy()
-    {
-        Ungrapple();
-        SharedData.currentPlayers -= 1;
-    }
-    */
 }

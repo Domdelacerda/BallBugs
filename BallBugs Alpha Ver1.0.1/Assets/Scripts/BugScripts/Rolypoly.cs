@@ -120,7 +120,7 @@ public class Rolypoly : Bug, ISlingshot
         {
             if (active == true)
             {
-                gameObject.layer = shieldLayer;
+                gameObject.layer = SHIELD_LAYER;
             }
             else
             {
@@ -154,7 +154,7 @@ public class Rolypoly : Bug, ISlingshot
                     currentCharge = 1;
                 }
                 Collider2D[] targets = Physics2D.OverlapCircleAll(gameObject.transform.position, homingRadius, LayerMask.GetMask("Player"));
-                if (defaultLayer == playerLayer && targets.Length < 2)
+                if (defaultLayer == PLAYER_LAYER && targets.Length < 2)
                 {
                     targets = Physics2D.OverlapCircleAll(gameObject.transform.position, homingRadius, LayerMask.GetMask("Enemy"));
                 }
@@ -170,7 +170,7 @@ public class Rolypoly : Bug, ISlingshot
             }
         }
         // On collision with a shield
-        if (collision.gameObject.layer == shieldLayer && attacking == true)
+        if (collision.gameObject.layer == SHIELD_LAYER && attacking == true)
         {
             // Shield script here
             if (collision.gameObject.GetComponent<Bug>() != null)
@@ -190,8 +190,8 @@ public class Rolypoly : Bug, ISlingshot
                 }
             }
         }
-        else if ((collision.gameObject.gameObject.layer == playerLayer || (collision.gameObject.gameObject.layer == enemyLayer 
-            && defaultLayer != enemyLayer)) && attacking == true)
+        else if ((collision.gameObject.gameObject.layer == PLAYER_LAYER || (collision.gameObject.gameObject.layer == ENEMY_LAYER 
+            && defaultLayer != ENEMY_LAYER)) && attacking == true)
         {
             // Knock the player backwards
             Vector2 thisPosition = new Vector2(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y);

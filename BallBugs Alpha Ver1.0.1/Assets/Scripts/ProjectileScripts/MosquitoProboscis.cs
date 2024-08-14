@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class MosquitoProboscis : Projectile
 {
-    private float charge;
     public float maxLifesteal = 0.3f;
 
     // Start is called before the first frame update
     void Start()
     {
-        charge = owner.GetComponent<Bug>().currentCharge;
         // Ignore collisions between the bug that fired the projectile and the projectile itself
         Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), gameObject.GetComponent<Collider2D>());
         FriendlyFireOff();

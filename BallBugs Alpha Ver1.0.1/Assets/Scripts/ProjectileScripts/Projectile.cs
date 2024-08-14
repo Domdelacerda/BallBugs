@@ -23,6 +23,7 @@ public class Projectile : MonoBehaviour
     public float invincibilityTime = 0f;
     // The lifetime of the projectile (if limited life is enabled)
     public float lifetime = 1f;
+    public float charge = 0f;
 
     // The rigidbody component of this projectile
     public Rigidbody2D rb;

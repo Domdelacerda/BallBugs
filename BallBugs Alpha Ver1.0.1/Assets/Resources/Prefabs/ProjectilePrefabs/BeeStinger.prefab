@@ -179,6 +179,7 @@ MonoBehaviour:
   numProjectiles: 1
   invincibilityTime: 0.5
   lifetime: 1
+  charge: 0
   rb: {fileID: 4726494947016605314}
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 0}
@@ -186,6 +187,7 @@ MonoBehaviour:
   generateSecondaryEffect: 0
   invincibility: 1
   limitedLife: 0
+  fixedTrajectory: 0
   damagePerBounce: 5
   colliderDelay: 0.25
   poisonDamage: 2
@@ -193,3 +195,5 @@ MonoBehaviour:
   numPoisonIntervals: 5
   toxic: 0
   shieldPiercing: 0
+  tacticalReload: 1
+  superTacticalReload: 1

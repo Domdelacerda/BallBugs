@@ -5,7 +5,6 @@ using UnityEngine;
 public class GrasshopperKick : Projectile
 {
     public float jumpForce = 15f;
-    public float charge = 0f;
 
     void OnCollisionEnter2D(Collision2D collision)
     {

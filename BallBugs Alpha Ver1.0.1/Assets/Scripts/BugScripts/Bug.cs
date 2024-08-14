@@ -28,8 +28,6 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     public bool recharged = false;
     public bool invincible = false;
     public bool primed = false;
-    protected bool chargingJump = false;
-    protected bool jumpReady = false;
     public bool slingshotMode = false;
     public bool slingshotControls = true;
 
@@ -90,8 +88,35 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         rechargeRoutine = StartCoroutine(Recharge());
     }
 
+    void FixedUpdate()
+    {
+        if (joystickDraw.magnitude != 0)
+        {
+            var angle = Mathf.Atan2(joystickDraw.x, joystickDraw.y) 
+                * Mathf.Rad2Deg * -1f;
+            rb.rotation = angle;
+        }
+        DisplayChargeBar(currentCharge);
+    }
+
+    void OnDestroy()
+    {
+        if (defaultLayer == PLAYER_LAYER)
+        {
+            SharedData.currentPlayers -= 1;
+        }
+        else
+        {
+            SharedData.currentBots -= 1;
+        }
+        if (grapple != null)
+        {
+            Ungrapple();
+        }
+    }
+
     //-------------------------------------------------------------------------
-    // PROGRAMMER-WRITTEN METHODS
+    // INPUT ACTIONS
     //-------------------------------------------------------------------------
 
     /// <summary>--------------------------------------------------------------
@@ -138,7 +163,6 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         {
             Ungrapple();
         }
-        chargingJump = ctx.performed;
     }
 
     /// <summary>--------------------------------------------------------------
@@ -178,70 +202,21 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
     }
 
-    // Recharge timer called after attacking; waits a specified amount of
-    // time before allowing the bug to shoot again
-    public virtual IEnumerator Recharge()
-    {
-        yield return new WaitForSeconds(cooldownTime);
-        recharged = true;
-        if (bugAnimator != null)
-        {
-            bugAnimator.SetBool("IsRecharged", true);
-        }
-        comboCounter = 0;
-    }
+    //-------------------------------------------------------------------------
+    // INTERFACE IMPLEMENTATIONS
+    //-------------------------------------------------------------------------
 
-    // If the recharge coroutine is running, stop it from doing so
-    public void StopRecharge()
-    {
-        if (rechargeRoutine != null)
-        {
-            StopCoroutine(rechargeRoutine);
-        }
-    }
-
-    // Called while the attack joystick is held down so that charge is built up
-    public void ChargingUp(bool shooting)
-    {
-        // Prime the next shot to be fired
-        primed = shooting;
-        currentCharge += chargeRate * Time.deltaTime;
-        // Maximum charge is 1
-        if (currentCharge >= 1f)
-        {
-            currentCharge = 1f;
-        }
-        // Minimum charge is 0
-        else if (currentCharge < 0f)
-        {
-            currentCharge = 0f;
-        }
-    }
-
-    // Upon releasing the joystick, disable the variables that allow the user to
-    // shoot and start the recharge timer
-    public void Release()
-    {
-        //shoot = false;
-        joystickDrawSaveStates[0] = joystickDraw;
-        recharged = false;
-        primed = false;
-        bugAnimator.SetBool("IsRecharged", false);
-        rechargeRoutine = StartCoroutine(Recharge());
-    }
-
-    public void SetVelocity(Vector2 newVelocity)
-    {
-        rb.velocity = newVelocity;
-    }
-
-    /// <summary>----------------------------------------------------------
-    /// Determines whether or not a point in space overlaps the ball based
-    /// on the position of its center and the size of its sprite
+    /// <summary>--------------------------------------------------------------
+    /// Removes health from this bug based on the specified damage value
+    /// and its armor percentage. A damage display is created to let the
+    /// player know how much damage was taken. If the bug loses all of its
+    /// health, it will be destroyed.
     /// </summary>
-    /// <param name="point">the point to be checked.</param>
-    /// <returns>whether or not the point overlaps the ball.</returns>
-    /// -------------------------------------------------------------------
+    /// <param name="damageTaken">the amount of damage dealt to this bug
+    /// from an attack or hazard.</param>
+    /// <returns>the amount of actual health lost after the damage calculation
+    /// is made.</returns>
+    /// -----------------------------------------------------------------------
     public int Damage(int damageTaken)
     {
         int damage = 0;
@@ -255,9 +230,7 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
             health -= damage;
             if (damage != 0)
             {
-                // Update the health bar when hit
                 DisplayHealthBar(maxHealth, health);
-                // Create the damage display when hit
                 CreateDisplay(damageDisplay, damage);
             }
             if (health <= 0)
@@ -268,17 +241,39 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         return damage;
     }
 
-    // Implmentation for poison interface
-    public void Poison(int damagePerInterval, float interval, int numIntervals)
+    /// <summary>--------------------------------------------------------------
+    /// Poisons this bug for a certain amount of time, and deals damage over a 
+    /// specified number of intervals. Only works as long as the bug is not
+    /// already poisoned.
+    /// </summary>
+    /// <param name="damagePerInterval">the amount of damage dealt to this bug 
+    /// per poison interval.</param>
+    /// <param name="interval">the time between damage intervals.</param>
+    /// <param name="numIntervals">the number of intervals damage is taken
+    /// over.</param>
+    /// -----------------------------------------------------------------------
+    public void Poison(int damagePerInterval, float interval,
+        int numIntervals)
     {
         if (poisoned == false)
         {
             poisoned = true;
-            poisonRoutine = StartCoroutine(Poisoned(damagePerInterval, interval, numIntervals));
+            poisonRoutine = StartCoroutine(Poisoned(damagePerInterval,
+                interval, numIntervals));
         }
     }
 
-    // Implementation for shield interface
+    /// <summary>--------------------------------------------------------------
+    /// Removes health from this bug based on the specified damage value and 
+    /// its shield percentage. A shield display is created to let the player 
+    /// know how much damage was taken. If the bug loses all of its health, it 
+    /// will be destroyed.
+    /// </summary>
+    /// <param name="damageTaken">the amount of damage dealt to this bug from 
+    /// an attack or hazard.</param>
+    /// <returns>the amount of actual health lost after the damage calculation
+    /// is made.</returns>
+    /// -----------------------------------------------------------------------
     public int Shield(int damageTaken)
     {
         int damage = 0;
@@ -290,9 +285,7 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
                 damage = health;
             }
             health -= damage;
-            // Update the health bar when hit
             DisplayHealthBar(maxHealth, health);
-            // Create the shield display when hit
             CreateDisplay(shieldDisplay, damage);
             if (health <= 0)
             {
@@ -302,7 +295,17 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         return damage;
     }
 
-    // Implmentation for heal interface
+    /// <summary>--------------------------------------------------------------
+    /// Adds health to this bug based on the specified heal value. A heal
+    /// display is created to let the player know how much health was regained.
+    /// If the bug gains more health than its max health, it will be reset back
+    /// to its max health.
+    /// </summary>
+    /// <param name="healAmount">the amount of healing applied to this bug
+    /// </param>
+    /// <returns>the amount of actual health regained after the calculation
+    /// is made.</returns>
+    /// -----------------------------------------------------------------------
     public virtual int Heal(int healAmount)
     {
         if (health != maxHealth)
@@ -314,26 +317,44 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
             health += healAmount;
             if (healAmount != 0)
             {
-                // Update the health bar when healed
                 DisplayHealthBar(maxHealth, health);
-                // Create the heal display when hit
                 CreateDisplay(healDisplay, healAmount);
             }
         }
         return healAmount;
     }
 
-    // Implmentation for regenerate interface
-    public void Regenerate(int healPerInterval, float interval, int numIntervals)
+    /// <summary>--------------------------------------------------------------
+    /// Causes this bug to regenerate health for a certain amount of time and 
+    /// over a specified number of intervals. Only works as long as the bug is
+    /// not already regenerating.
+    /// </summary>
+    /// <param name="healPerInterval">the amount of healing applied to bug 
+    /// per poison interval.</param>
+    /// <param name="interval">the time between healing intervals.</param>
+    /// <param name="numIntervals">the number of intervals health is regained 
+    /// over.</param>
+    /// -----------------------------------------------------------------------
+    public void Regenerate(int healPerInterval, float interval,
+        int numIntervals)
     {
         if (regenerating == false)
         {
             regenerating = true;
-            poisonRoutine = StartCoroutine(Regen(healPerInterval, interval, numIntervals));
+            poisonRoutine = StartCoroutine(Regen(healPerInterval, interval,
+                numIntervals));
         }
     }
 
-    // Implementation for wrap interface
+    /// <summary>--------------------------------------------------------------
+    /// Immobilizes this bug and prevents them from aiming, shooting, jumping,
+    /// or crouching for a given amount of time. Temporarily sets their 
+    /// animator to a wrapped state. 
+    /// </summary>
+    /// <param name="wrappedBug">the animator controller the bug is given to
+    /// indicate that it is immobilized.</param>
+    /// <param name="seconds">the time the bug stays immobilized.</param>
+    /// -----------------------------------------------------------------------
     public void Wrap(RuntimeAnimatorController wrappedBug, float seconds)
     {
         bugAnimator.runtimeAnimatorController = wrappedBug;
@@ -346,16 +367,56 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         StartCoroutine(Wrapped(seconds));
     }
 
-    protected IEnumerator Wrapped(float wrappedTime)
+    /// <summary>--------------------------------------------------------------
+    /// Makes this bug invincible for a certain amount of time and displays
+    /// flashing to indicate that the bug is still invincible.
+    /// </summary>
+    /// <param name="seconds">the time the bug stays invincible.</param>
+    /// -----------------------------------------------------------------------
+    public void InvincibilityFrames(float seconds)
     {
-        yield return new WaitForSeconds(wrappedTime);
-        bugAnimator.runtimeAnimatorController = bugController;
-        bugAnimator.SetBool("IsRecharged", recharged);
-        enableHitbox(true);
-        wrapped = false;
+        if (invincible == false)
+        {
+            invincible = true;
+            StartCoroutine(Flash(seconds, FLASH_INTERVAL));
+            StartCoroutine(Invincible(seconds));
+        }
     }
 
-    protected IEnumerator Poisoned(int damagePerInterval, float interval, int numIntervals)
+    //-------------------------------------------------------------------------
+    // COROUTINES
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Recharge the bug's attack, allowing them to attack again after a
+    /// specified cooldown time has passed.
+    /// </summary>
+    /// <returns>coroutine that executes recharge event.</returns>
+    /// -----------------------------------------------------------------------
+    public virtual IEnumerator Recharge()
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        recharged = true;
+        if (bugAnimator != null)
+        {
+            bugAnimator.SetBool("IsRecharged", true);
+        }
+        comboCounter = 0;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Poisons this bug for a certain amount of time, and deals damage over a 
+    /// specified number of intervals.
+    /// </summary>
+    /// <param name="damagePerInterval">the amount of damage dealt to this bug 
+    /// per poison interval.</param>
+    /// <param name="interval">the time between damage intervals.</param>
+    /// <param name="numIntervals">the number of intervals damage is taken
+    /// over.</param>
+    /// <returns>coroutine that executes poison damage event.</returns>
+    /// -----------------------------------------------------------------------
+    protected IEnumerator Poisoned(int damagePerInterval, float interval, 
+        int numIntervals)
     {
         yield return new WaitForSeconds(interval);
         int damage = damagePerInterval;
@@ -375,7 +436,8 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
         if (numIntervals > 1)
         {
-            poisonRoutine = StartCoroutine(Poisoned(damagePerInterval, interval, numIntervals - 1));
+            poisonRoutine = StartCoroutine(Poisoned(damagePerInterval, 
+                interval, numIntervals - 1));
         }
         else
         {
@@ -383,7 +445,19 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
     }
 
-    protected IEnumerator Regen(int healPerInterval, float interval, int numIntervals)
+    /// <summary>--------------------------------------------------------------
+    /// Causes this bug to regenerate health for a certain amount of time and 
+    /// over a specified number of intervals.
+    /// </summary>
+    /// <param name="healPerInterval">the amount of healing applied to this 
+    /// bug per regeneration interval.</param>
+    /// <param name="interval">the time between healing intervals.</param>
+    /// <param name="numIntervals">the number of intervals health is regained
+    /// over.</param>
+    /// <returns>coroutine that executes health regeneration event.</returns>
+    /// -----------------------------------------------------------------------
+    protected IEnumerator Regen(int healPerInterval, float interval, 
+        int numIntervals)
     {
         yield return new WaitForSeconds(interval);
         int heal = healPerInterval;
@@ -399,7 +473,8 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
         if (numIntervals > 1)
         {
-            regenRoutine = StartCoroutine(Regen(healPerInterval, interval, numIntervals - 1));
+            regenRoutine = StartCoroutine(Regen(healPerInterval, interval, 
+                numIntervals - 1));
         }
         else
         {
@@ -407,18 +482,151 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// After a certain amount of time being wrapped, the bug is released. The
+    /// bug regains full movement control and their animator is reset back to
+    /// its default animator.
+    /// </summary>
+    /// <param name="wrappedTime">the amount of time the bug stays wrapped for.
+    /// </param>
+    /// <returns>coroutine that executes the unwrap event.</returns>
+    /// -----------------------------------------------------------------------
+    protected IEnumerator Wrapped(float wrappedTime)
+    {
+        yield return new WaitForSeconds(wrappedTime);
+        bugAnimator.runtimeAnimatorController = bugController;
+        bugAnimator.SetBool("IsRecharged", recharged);
+        enableHitbox(true);
+        wrapped = false;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// After a certain amount of time being invincible, the bug is made
+    /// vulnerable again and the flashing effect stops.
+    /// </summary>
+    /// <param name="invincibleTime">the amount of time the bug stays
+    /// invincible for.</param>
+    /// <returns>coroutine that executes the vulnerability event.</returns>
+    /// -----------------------------------------------------------------------
+    protected IEnumerator Invincible(float invincibleTime)
+    {
+        yield return new WaitForSeconds(invincibleTime);
+        invincible = false;
+        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Flash this bug's sprite on and off after each interval passes for a
+    /// specified amount of time.
+    /// </summary>
+    /// <param name="time">the total amount of time the bug flashes for.
+    /// </param>
+    /// <param name="intervalTime">the interval between when the bug flashes on
+    /// and off.</param>
+    /// <returns>coroutine that executes the vulnerability event.</returns>
+    /// -----------------------------------------------------------------------
+    protected IEnumerator Flash(float time, float intervalTime)
+    {
+        float elapsedTime = 0f;
+        int index = 0;
+        while (elapsedTime < time)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 
+                255, 255, index % 2);
+            elapsedTime += Time.deltaTime;
+            index++;
+            yield return new WaitForSeconds(intervalTime);
+            elapsedTime += intervalTime;
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Charge up the bug's next attack based on its charge rate, bounded below
+    /// by zero and bounded above by one.
+    /// </summary>
+    /// <param name="shooting">indicates whether the bug is currently charging
+    /// an attack or not.</param>
+    /// -----------------------------------------------------------------------
+    public void ChargingUp(bool shooting)
+    {
+        primed = shooting;
+        if (currentCharge < 1f)
+        {
+            currentCharge += chargeRate * Time.deltaTime;
+            if (currentCharge >= 1f)
+            {
+                currentCharge = 1f;
+            }
+        }
+        else if (currentCharge < 0f)
+        {
+            currentCharge = 0f;
+        }
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Cancel the recharge coroutine if it is currently running.
+    /// </summary>-------------------------------------------------------------
+    public void StopRecharge()
+    {
+        if (rechargeRoutine != null)
+        {
+            StopCoroutine(rechargeRoutine);
+        }
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Release the shot currently being charged, which entails setting the
+    /// bug's animator to its uncharged state and starting the recharge 
+    /// coroutine.
+    /// </summary>-------------------------------------------------------------
+    public void Release()
+    {
+        joystickDrawSaveStates[0] = joystickDraw;
+        recharged = false;
+        primed = false;
+        bugAnimator.SetBool("IsRecharged", false);
+        rechargeRoutine = StartCoroutine(Recharge());
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Sets this bug's velocity to a specified speed and direction
+    /// </summary>
+    /// <param name="newVelocity">the new velocity the bug is given.</param>
+    /// -----------------------------------------------------------------------
+    public void SetVelocity(Vector2 newVelocity)
+    {
+        rb.velocity = newVelocity;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Removes the current poison status effect afflicting this bug.
+    /// </summary>-------------------------------------------------------------
     public void CurePoison()
     {
         StopCoroutine(poisonRoutine);
         poisoned = false;
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Removes the current regeneration status effect afflicting this bug.
+    /// </summary>-------------------------------------------------------------
     public void CancelRegen()
     {
         StopCoroutine(regenRoutine);
         regenerating = false;
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Enables or disables this bug's persistent hitbox, if it exists. 
+    /// Persistent hitboxes can include fangs, mandibles, or shields.
+    /// </summary>
+    /// <param name="active">whether the hotbox should be enabled or disabled.
+    /// -----------------------------------------------------------------------
     public void enableHitbox(bool active)
     {
         if (persistentHitbox != null)
@@ -427,69 +635,71 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
     }
 
-    // Implmentation for invincibility frames interface
-    public void InvincibilityFrames(float seconds)
-    {
-        if (invincible == false)
-        {
-            invincible = true;
-            StartCoroutine(Flash(seconds, FLASH_INTERVAL));
-            StartCoroutine(Invincible(seconds));
-        }
-    }
-
-    // Invincibility timer
-    protected IEnumerator Invincible(float invincibleTime)
-    {
-        yield return new WaitForSeconds(invincibleTime);
-        invincible = false;
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-    }
-
-    // Credit for Flash goes to user Heisenbug on StackExchange: https://stackoverflow.com/questions/16114349/make-player-flash-when-hit
-    protected IEnumerator Flash(float time, float intervalTime)
-    {
-        float elapsedTime = 0f;
-        int index = 0;
-        while (elapsedTime < time)
-        {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, index % 2);
-            elapsedTime += Time.deltaTime;
-            index++;
-            yield return new WaitForSeconds(intervalTime);
-            elapsedTime += intervalTime;
-        }
-    }
-
-    // Create and assemble a new damage/heal display object
+    /// <summary>--------------------------------------------------------------
+    /// Creates a new display of a specified type which displays the provided
+    /// amount. Currently implemented displays include damage, heal, shield,
+    /// and poison.
+    /// </summary>
+    /// <param name="type">the type of display to be created.</param>
+    /// <param name="amount">the amount to be displayed.</param>
+    /// -----------------------------------------------------------------------
     public void CreateDisplay(GameObject type, int amount)
     {
-        GameObject display = Instantiate(type, gameObject.transform.position, Quaternion.identity);
+        GameObject display = Instantiate(type, gameObject.transform.position, 
+            Quaternion.identity);
         display.GetComponent<DamageDisplay>().damage = amount;
         display.GetComponent<DamageDisplay>().owner = gameObject;
     }
 
-    // Display the health bar
+    /// <summary>--------------------------------------------------------------
+    /// Updates the bug's health bar based on the ratio of its current health
+    /// to its max health.
+    /// </summary>
+    /// <param name="maxHealth">the bug's maximum health.</param>
+    /// <param name="currentHealth">the bug's current health.</param>
+    /// -----------------------------------------------------------------------
     public void DisplayHealthBar(int maxHealth, int currentHealth)
     {
-        healthBarCanvas.GetComponent<HealthBar>().UpdateHealthBar(maxHealth, currentHealth);
+        healthBarCanvas.GetComponent<HealthBar>().UpdateHealthBar(maxHealth, 
+            currentHealth);
     }
 
-    // Display the charge bar
+    /// <summary>--------------------------------------------------------------
+    /// Updates the bug's charge bar based on the ratio of its current charge
+    /// to the maximum charge value, one.
+    /// </summary>
+    /// <param name="charge">the bug's current charge.</param>
+    /// -----------------------------------------------------------------------
     public void DisplayChargeBar(float charge)
     {
         healthBarCanvas.GetComponent<HealthBar>().UpdateChargeBar(charge);
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Grapples this bug to a specified point on the map
+    /// </summary>
+    /// <param name="grapplePoint">the point in space that the bug is grappled
+    /// to.</param>
+    /// -----------------------------------------------------------------------
     public void Grapple(Vector2 grapplePoint)
     {
         grapple.enabled = true;
         grapplePos = grapplePoint;
         grapple.connectedAnchor = grapplePoint;
-        distance = new Vector2(grapplePoint.x - gameObject.transform.position.x, grapplePoint.y - gameObject.transform.position.y);
+        distance = new Vector2(grapplePoint.x - 
+            gameObject.transform.position.x, grapplePoint.y - 
+            gameObject.transform.position.y);
         grapple.distance = distance.magnitude;
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Updates the current grapple point based on a new position
+    /// </summary>
+    /// <param name="grapplePoint">the point in space that the bug is going to
+    /// be grappled to.</param>
+    /// <param name="web">the web object that the other end of the grapple is
+    /// anchored to.</param>
+    /// -----------------------------------------------------------------------
     public void UpdateGrapple(Vector2 grapplePoint, GameObject web)
     {
         if (grapple.enabled == true && currentWeb == web)
@@ -499,38 +709,13 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
         }
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Ungrapples this bug, removing the tether keeping it grappled and the
+    /// web object it was attached to.
+    /// </summary>-------------------------------------------------------------
     public void Ungrapple()
     {
         grapple.enabled = false;
         Destroy(currentWeb);
-    }
-
-    void FixedUpdate()
-    {
-        // The player rotates in the direction that the joystick is pointed
-        if (joystickDraw.magnitude != 0)
-        {
-            // The x and y position of the joystick are used to determine it's angle of rotation
-            // This formula can be used to find the rotation of ANY VECTOR. Keep this in mind
-            var angle = Mathf.Atan2(joystickDraw.x, joystickDraw.y) * Mathf.Rad2Deg * -1f;
-            rb.rotation = angle;
-        }
-        DisplayChargeBar(currentCharge);
-    }
-
-    void OnDestroy()
-    {
-        if (defaultLayer == PLAYER_LAYER)
-        {
-            SharedData.currentPlayers -= 1;
-        }
-        else
-        {
-            SharedData.currentBots -= 1;
-        }
-        if (grapple != null)
-        {
-            Ungrapple();
-        }
     }
 }

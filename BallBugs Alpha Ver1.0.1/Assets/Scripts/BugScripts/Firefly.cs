@@ -1,29 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a firefly class that is fun to play
+//-----------------------------------------------------------------------------
+
 using UnityEngine;
 
 public class Firefly : Bug, ISlingshot
 {
-    // The point at which the projectile is fired
+    /// <summary>--------------------------------------------------------------
+    /// Firefly is one of the player characters in the game. Firefly is a
+    /// powerhouse class that shoots high damage, explosive fireballs. The
+    /// charge meter determines the size of the fireballs and their subsequent
+    /// explosions.
+    /// </summary>-------------------------------------------------------------
+
     public Transform firePoint;
-    // The prefab for the projectile to be instantiated
     public GameObject fireballPrefab;
+    public GameObject visualizer;
 
-    // The visualizer game object that is used to display projectile size
-    public GameObject Visualizer;
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
 
-    // Update executes every frame
     void Update()
     {
-        // Slingshot shooting controls (on joystick release)
-        if (joystickDraw.magnitude == 0f && recharged == true && primed == true && slingshotControls == true && wrapped == false)
+        if (joystickDraw.magnitude == 0f && recharged == true && primed == true
+            && slingshotControls == true && wrapped == false)
         {
             slingshotMode = true;
             Sling();
             Release();
         }
-        // If the joystick is not centered (if it is being pulled back)
-        else if (joystickDraw.magnitude != 0f && recharged == true && wrapped == false)
+        else if (joystickDraw.magnitude != 0f && recharged == true &&
+            wrapped == false)
         {
             ChargingUp(true);
             CalculateVisualizer(currentCharge);
@@ -33,7 +43,6 @@ public class Firefly : Bug, ISlingshot
                 joystickDrawSaveStates[i] = joystickDrawSaveStates[i - 1];
             }
             joystickDrawSaveStates[0] = joystickDraw;
-            // Manual shooting controls (on button press)
             if (recharged == true && shoot == true)
             {
                 slingshotMode = false;
@@ -49,24 +58,49 @@ public class Firefly : Bug, ISlingshot
         shoot = false;
     }
 
-    // Implementation for the sling interface
+    //-------------------------------------------------------------------------
+    // INTERFACE IMPLEMENTATIONS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Creates a new instance of the fireball prefab, scales it depending
+    /// the current charge, and fires it.
+    /// </summary>-------------------------------------------------------------
     public void Sling()
     {
-        // New instance of fireball prefab is created and fired
-        GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
-        fireball.transform.localScale = fireball.transform.localScale * (1f + currentCharge);
+        GameObject fireball = Instantiate(fireballPrefab, firePoint.position, 
+            firePoint.rotation);
+        fireball.transform.localScale = fireball.transform.localScale 
+            * (1f + currentCharge);
         fireball.GetComponent<Projectile>().owner = gameObject;
     }
 
-    // Credit for SetVisualizerActive goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Enables or disables the trajectory visualizer to see where a shot is 
+    /// going to be fired.
+    /// </summary>
+    /// <param name="active">whether the visualizer is being enabled or 
+    /// disabled.</param>
+    /// -----------------------------------------------------------------------
     void SetVisualizerActive(bool active)
     {
-        Visualizer.GetComponent<Renderer>().enabled = active;
+        visualizer.GetComponent<Renderer>().enabled = active;
     }
 
-    // Credit for CalculateVisualizer goes to NightShade on youtube: https://youtu.be/kRgFiCjdLpY
+    /// <summary>--------------------------------------------------------------
+    /// Calculates the new visualizer size based on the current charge of 
+    /// firefly. 
+    /// </summary>
+    /// <param name="charge">the current charge of firefly.</param>
+    /// -----------------------------------------------------------------------
     void CalculateVisualizer(float charge)
     {
-        Visualizer.transform.localScale = Visualizer.transform.localScale.normalized * (1f + currentCharge) * 4.5f;
+        visualizer.transform.localScale = 
+            visualizer.transform.localScale.normalized 
+            * (1f + charge) * 4.5f;
     }
 }
