@@ -85,7 +85,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0.421875
   m_AngularDrag: 0
-  m_GravityScale: 1.5
+  m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 318e862590cb2f6418bd3f170b320c83, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -168,8 +168,13 @@ MonoBehaviour:
   bounces: 2
   numProjectiles: 1
   invincibilityTime: 0
+  lifetime: 1
+  charge: 0
   rb: {fileID: 7534518559836757793}
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 3272316997784551073, guid: 694fb7475f43f9d4485778a5fe289227, type: 3}
   secondaryEffectSize: 1
   generateSecondaryEffect: 1
+  invincibility: 1
+  limitedLife: 0
+  fixedTrajectory: 0

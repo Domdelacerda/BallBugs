@@ -608,7 +608,10 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     /// </summary>-------------------------------------------------------------
     public void CurePoison()
     {
-        StopCoroutine(poisonRoutine);
+        if (poisonRoutine != null)
+        {
+            StopCoroutine(poisonRoutine);
+        }
         poisoned = false;
     }
 
@@ -617,7 +620,10 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     /// </summary>-------------------------------------------------------------
     public void CancelRegen()
     {
-        StopCoroutine(regenRoutine);
+        if (regenRoutine != null)
+        {
+            StopCoroutine(regenRoutine);
+        }
         regenerating = false;
     }
 

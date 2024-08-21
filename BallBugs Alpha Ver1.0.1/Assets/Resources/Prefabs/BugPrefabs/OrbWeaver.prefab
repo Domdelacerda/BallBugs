@@ -626,9 +626,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44063e20ddfcccf44944237ed5c744ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {x: 0, y: 0}
   moveSpeed: 2.25
   rb: {fileID: 4714855215371693689}
-  movement: {x: 0, y: 0}
   gameEnder: {fileID: 0}
 --- !u!95 &5680189422424144618
 Animator:
@@ -826,7 +826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c8f8128f7eb8d4992c381980d74b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slingshotControls: 1
   bugAnimator: {fileID: 5680189422424144618}
   bugController: {fileID: 9100000, guid: d24f45b840e06f142b39bd190bc52e12, type: 2}
   shoot: 0
@@ -834,6 +833,7 @@ MonoBehaviour:
   invincible: 0
   primed: 0
   slingshotMode: 0
+  slingshotControls: 1
   wrapped: 0
   poisoned: 0
   regenerating: 0
@@ -847,13 +847,13 @@ MonoBehaviour:
   chargeRate: 0.3
   comboCounter: 0
   rb: {fileID: 4714855215371693689}
+  persistentHitbox: {fileID: 0}
   healthBarCanvas: {fileID: 4485810015532132156}
   scoreText: {fileID: 3085112395074314582}
   damageDisplay: {fileID: 6362022031793762862, guid: df3174a9ccdeb3a44960d20064e2d1d0, type: 3}
   healDisplay: {fileID: 1708791169038321372, guid: 1cac42c6c7ba8e94483f9c861c580bdc, type: 3}
   shieldDisplay: {fileID: 5128629524205918079, guid: 781f7b408e4406e42a606bb5d3150802, type: 3}
   poisonDisplay: {fileID: 3478437826470320305, guid: e27b85551c564e94ea7e6be385e05df1, type: 3}
-  persistentHitbox: {fileID: 0}
   joystickDraw: {x: 0, y: 0}
   joystickDrawSaveStates:
   - {x: 0, y: 0}
@@ -863,12 +863,12 @@ MonoBehaviour:
   grapple: {fileID: 6551815786432330657}
   grapplePos: {x: 0, y: 0}
   currentWeb: {fileID: 0}
+  trajectory: {fileID: 8840469006639233655}
   segmentCount: 25
   firePoint: {fileID: 4246347619032416038}
   webPrefab: {fileID: 9139996654006841940, guid: 73d87df54ec072b48929e28071a0fbcb, type: 3}
   zipSpeed: 5
   autoZip: 1
-  Trajectory: {fileID: 8840469006639233655}
 --- !u!231 &6551815786432330657
 SpringJoint2D:
   m_ObjectHideFlags: 0

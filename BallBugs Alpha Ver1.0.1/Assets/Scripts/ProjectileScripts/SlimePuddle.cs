@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SlimePuddle : MonoBehaviour
@@ -219,14 +217,9 @@ public class SlimePuddle : MonoBehaviour
         if (other.gameObject.GetInstanceID() == owner.GetInstanceID() && wallClimbing == true)
         {
             other.attachedRigidbody.gravityScale = other.attachedRigidbody.gravityScale / gravityReductionScale;
-            //other.gameObject.GetComponent<Bug>().CancelRegen();
         }
-        /*
-        else if ((other.gameObject.layer == playerLayer || other.gameObject.layer == enemyLayer) && poisonDamage != 0)
-        {
-            other.gameObject.GetComponent<Bug>().CurePoison();
-        }
-        */
+        other.gameObject.GetComponent<Bug>().CurePoison();
+        other.gameObject.GetComponent<Bug>().CancelRegen();
         other.sharedMaterial = defaultMaterial;
     }
 

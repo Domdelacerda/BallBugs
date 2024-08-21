@@ -118,6 +118,7 @@ public class BeeStinger : Projectile
             ShieldDeflect(collision.collider.transform, collision.relativeVelocity.magnitude);
             // Reactivate collision between the bug that initially fired the projectile and the projectile itself
             Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), gameObject.GetComponent<Collider2D>(), false);
+            tacticalReload = false;
             owner = collision.gameObject;
             // Damage is dealt based on how fast the stinger is moving
             int tempDamage = Mathf.RoundToInt(maxDamage * (collision.relativeVelocity.magnitude / speed));

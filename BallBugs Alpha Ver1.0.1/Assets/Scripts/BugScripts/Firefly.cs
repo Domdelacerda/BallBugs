@@ -19,6 +19,8 @@ public class Firefly : Bug, ISlingshot
     public GameObject fireballPrefab;
     public GameObject visualizer;
 
+    private const float VISUALIZER_SIZE = 4.5f;
+
     //-------------------------------------------------------------------------
     // GENERATED METHODS
     //-------------------------------------------------------------------------
@@ -66,7 +68,7 @@ public class Firefly : Bug, ISlingshot
     /// Creates a new instance of the fireball prefab, scales it depending
     /// the current charge, and fires it.
     /// </summary>-------------------------------------------------------------
-    public void Sling()
+    public virtual void Sling()
     {
         GameObject fireball = Instantiate(fireballPrefab, firePoint.position, 
             firePoint.rotation);
@@ -101,6 +103,6 @@ public class Firefly : Bug, ISlingshot
     {
         visualizer.transform.localScale = 
             visualizer.transform.localScale.normalized 
-            * (1f + charge) * 4.5f;
+            * (1f + charge) * VISUALIZER_SIZE;
     }
 }

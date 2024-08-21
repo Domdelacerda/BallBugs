@@ -244,9 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44063e20ddfcccf44944237ed5c744ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {x: 0, y: 0}
   moveSpeed: 2.25
   rb: {fileID: 9177169810883801542}
-  movement: {x: 0, y: 0}
   gameEnder: {fileID: 0}
 --- !u!95 &8304817407211264001
 Animator:
@@ -281,7 +281,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef211cc5674a254e8f3ae2e955caf7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slingshotControls: 1
   bugAnimator: {fileID: 8304817407211264001}
   bugController: {fileID: 9100000, guid: c190d9f144057c54e997612ca602ff55, type: 2}
   shoot: 0
@@ -289,6 +288,7 @@ MonoBehaviour:
   invincible: 0
   primed: 0
   slingshotMode: 0
+  slingshotControls: 1
   wrapped: 0
   poisoned: 0
   regenerating: 0
@@ -302,13 +302,13 @@ MonoBehaviour:
   chargeRate: 0.3
   comboCounter: 0
   rb: {fileID: 9177169810883801542}
+  persistentHitbox: {fileID: 7122769388733453108}
   healthBarCanvas: {fileID: 6892363225315702900}
   scoreText: {fileID: 4114415349467210084}
   damageDisplay: {fileID: 6362022031793762862, guid: df3174a9ccdeb3a44960d20064e2d1d0, type: 3}
   healDisplay: {fileID: 1708791169038321372, guid: 1cac42c6c7ba8e94483f9c861c580bdc, type: 3}
   shieldDisplay: {fileID: 5128629524205918079, guid: 781f7b408e4406e42a606bb5d3150802, type: 3}
   poisonDisplay: {fileID: 3478437826470320305, guid: e27b85551c564e94ea7e6be385e05df1, type: 3}
-  persistentHitbox: {fileID: 7122769388733453108}
   joystickDraw: {x: 0, y: 0}
   joystickDrawSaveStates:
   - {x: 0, y: 0}
@@ -1167,7 +1167,6 @@ GameObject:
   - component: {fileID: 3363033076597867209}
   - component: {fileID: 8159336827391002365}
   - component: {fileID: 4475239023863706670}
-  - component: {fileID: 4685132678777870634}
   m_Layer: 1
   m_Name: AirResistance
   m_TagString: Untagged
@@ -1263,41 +1262,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!58 &4685132678777870634
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7122769388733453108}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.01, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.36
 --- !u!1 &8959906914007995152
 GameObject:
   m_ObjectHideFlags: 0

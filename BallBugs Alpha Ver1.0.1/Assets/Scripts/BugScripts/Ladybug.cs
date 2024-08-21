@@ -16,7 +16,7 @@ public class Ladybug : Bug, ISlingshot
     /// fired per burst, 1 at a minumum and 5 at a maximum.
     /// </summary>-------------------------------------------------------------
 
-    public LineRenderer Trajectory;
+    public LineRenderer trajectory;
     public int segmentCount;
 
     public Transform firePoint;
@@ -116,7 +116,7 @@ public class Ladybug : Bug, ISlingshot
     /// -----------------------------------------------------------------------
     void SetTrajectoryActive(bool active)
     {
-        Trajectory.enabled = active;
+        trajectory.enabled = active;
     }
 
     /// <summary>--------------------------------------------------------------
@@ -139,10 +139,10 @@ public class Ladybug : Bug, ISlingshot
             segments[i] = segments[0] + segVelocity * timeCurve + 0.5f 
                 * Physics2D.gravity * Mathf.Pow(timeCurve, 2);
         }
-        Trajectory.positionCount = segmentCount;
+        trajectory.positionCount = segmentCount;
         for (int j = 0; j < segmentCount; j++)
         {
-            Trajectory.SetPosition(j, segments[j]);
+            trajectory.SetPosition(j, segments[j]);
         }
     }
 }

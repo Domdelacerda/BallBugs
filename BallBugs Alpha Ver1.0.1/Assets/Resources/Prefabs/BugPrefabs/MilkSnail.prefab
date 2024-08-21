@@ -453,9 +453,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44063e20ddfcccf44944237ed5c744ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {x: 0, y: 0}
   moveSpeed: 2.5
   rb: {fileID: 8930166692910148225}
-  movement: {x: 0, y: 0}
   gameEnder: {fileID: 0}
 --- !u!95 &8351578063304086495
 Animator:
@@ -490,7 +490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69eab8ce7dfc6d94e8132f1bd6874c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slingshotControls: 1
   bugAnimator: {fileID: 8351578063304086495}
   bugController: {fileID: 9100000, guid: e00d5313b65bc6f4faa7d432080344c0, type: 2}
   shoot: 0
@@ -498,6 +497,7 @@ MonoBehaviour:
   invincible: 0
   primed: 0
   slingshotMode: 0
+  slingshotControls: 1
   wrapped: 0
   poisoned: 0
   regenerating: 0
@@ -511,13 +511,13 @@ MonoBehaviour:
   chargeRate: 0.4
   comboCounter: 0
   rb: {fileID: 8930166692910148225}
+  persistentHitbox: {fileID: 0}
   healthBarCanvas: {fileID: 4703275051726018230}
   scoreText: {fileID: 6287172193575062513}
   damageDisplay: {fileID: 6362022031793762862, guid: df3174a9ccdeb3a44960d20064e2d1d0, type: 3}
   healDisplay: {fileID: 1708791169038321372, guid: 1cac42c6c7ba8e94483f9c861c580bdc, type: 3}
   shieldDisplay: {fileID: 5128629524205918079, guid: 781f7b408e4406e42a606bb5d3150802, type: 3}
   poisonDisplay: {fileID: 3478437826470320305, guid: e27b85551c564e94ea7e6be385e05df1, type: 3}
-  persistentHitbox: {fileID: 0}
   joystickDraw: {x: 0, y: 0}
   joystickDrawSaveStates:
   - {x: 0, y: 0}
@@ -528,8 +528,8 @@ MonoBehaviour:
   grapplePos: {x: 0, y: 0}
   currentWeb: {fileID: 0}
   firePoint: {fileID: 5027332371303207755}
-  slimeballPrefab: {fileID: 8337514261527461981, guid: ff1673aa55a914e498ba592d4277d953, type: 3}
-  Visualizer: {fileID: 3115686268100813156}
+  fireballPrefab: {fileID: 8337514261527461981, guid: ff1673aa55a914e498ba592d4277d953, type: 3}
+  visualizer: {fileID: 3115686268100813156}
   withdrawal: 1
 --- !u!114 &2768855176229354917
 MonoBehaviour:
