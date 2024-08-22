@@ -71,6 +71,9 @@ TagManager:
   - name: Projectiles
     uniqueID: 1202923249
     locked: 0
+  - name: Water
+    uniqueID: 941154345
+    locked: 0
   - name: Foreground
     uniqueID: 3001001797
     locked: 0

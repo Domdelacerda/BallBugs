@@ -190,7 +190,8 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     {
         if (ctx.performed)
         {
-            GameObject[] pauseButtons = GameObject.FindGameObjectsWithTag("Back");
+            GameObject[] pauseButtons = 
+                GameObject.FindGameObjectsWithTag("Back");
             for (int i = 0; i < pauseButtons.Length; i++)
             {
                 if (pauseButtons[i].GetComponent<Button>().enabled == true)
