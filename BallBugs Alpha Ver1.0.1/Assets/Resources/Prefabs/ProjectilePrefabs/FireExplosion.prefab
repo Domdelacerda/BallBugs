@@ -185,11 +185,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliderImmediate: 1
   colliderDeactivate: 1
-  knockback: 1
   lifetime: 1.06
+  knockback: 1
+  bombJump: 1
+  blastBlock: 1
   explosionForce: 80
   maxDamage: 30
+  charge: 0
   invincibilityTime: 1
-  firefly: {fileID: 0}
+  owner: {fileID: 0}
   explosionCollider: {fileID: 1809800033275363741}
-  damage: 0

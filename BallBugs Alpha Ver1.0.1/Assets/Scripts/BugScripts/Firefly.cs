@@ -74,7 +74,9 @@ public class Firefly : Bug, ISlingshot
             firePoint.rotation);
         fireball.transform.localScale = fireball.transform.localScale 
             * (1f + currentCharge);
-        fireball.GetComponent<Projectile>().owner = gameObject;
+        Projectile script = fireball.GetComponent<Projectile>();
+        script.owner = gameObject;
+        script.charge = currentCharge;
     }
 
     //-------------------------------------------------------------------------

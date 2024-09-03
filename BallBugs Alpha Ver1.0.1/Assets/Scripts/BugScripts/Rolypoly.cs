@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------------
 
 using UnityEngine;
-using System.Collections;
 
 public class Rolypoly : Bug, ISlingshot
 {

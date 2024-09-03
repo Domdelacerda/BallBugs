@@ -1,13 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a fireball class that functions as intended
+//-----------------------------------------------------------------------------
+
 using UnityEngine;
 
 public class Fireball : Projectile
 {
-    // Private damage field for calculations
-    private int damage = 0;
+    /// <summary>--------------------------------------------------------------
+    /// Fireball is a projectile that is fired by the Firefly character. The
+    /// fireball deals damage based on how large it is.
+    /// 
+    /// ******************************UPGRADES*********************************
+    /// 
+    /// Bouncing I, II: Increases the number of times the fireball can bounce
+    /// off terrain before disappearing by 1 per upgrade level.
+    /// 
+    /// </summary>-------------------------------------------------------------
 
-    // When the fireball hits terrain, 1 is subtracted from its bounce counter
+    //-------------------------------------------------------------------------
+    // COLLISION EVENTS
+    //-------------------------------------------------------------------------
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Terrain"))
@@ -15,65 +30,73 @@ public class Fireball : Projectile
             bounces--;
             if (bounces < 0)
             {
-                if (generateSecondaryEffect == true)
+                if (secondaryEffectPrefab != null && secondaryEffectSize != 0)
                 {
                     Explode();
                 }
                 Destroy(gameObject);
             }
         }
-        // On collision with a shield
-        else if (collision.collider.gameObject.layer == shieldLayer)
+        else if (collision.collider.gameObject.layer == SHIELD_LAYER)
         {
-            // Shield script here
-            ShieldDeflect(collision.collider.transform, collision.relativeVelocity.magnitude);
-            // Reactivate collision between the bug that initially fired the projectile and the projectile itself
-            Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), gameObject.GetComponent<Collider2D>(), false);
+            ShieldDeflect(collision.collider.transform, 
+                collision.relativeVelocity.magnitude);
+            Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), 
+                gameObject.GetComponent<Collider2D>(), false);
             owner = collision.gameObject;
-            damage = Mathf.RoundToInt((gameObject.transform.localScale.x / 2f) * maxDamage);
-            // Make sure that damage doesn't exceed the maximum
-            if (damage > maxDamage)
-            {
-                damage = maxDamage;
-            }
-            // Make sure that the damage isn't less than the minimum
-            else if (damage < minDamage)
-            {
-                damage = minDamage;
-            }
-            owner.GetComponent<Bug>().Shield(damage);
-            owner.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
+            tempDamage = CalculateDamage();
+            Bug bug = owner.GetComponent<Bug>();
+            bug.Shield(tempDamage);
+            bug.InvincibilityFrames(invincibilityTime);
         }
-        else if (collision.gameObject.layer == playerLayer || collision.gameObject.layer == enemyLayer)
+        else if (collision.gameObject.layer == PLAYER_LAYER 
+            || collision.gameObject.layer == ENEMY_LAYER)
         {
-            damage = Mathf.RoundToInt((gameObject.transform.localScale.x / 2f) * maxDamage);
-            // Make sure that damage doesn't exceed the maximum
-            if (damage > maxDamage)
-            {
-                damage = maxDamage;
-            }
-            // Make sure that the damage isn't less than the minimum
-            else if (damage < minDamage)
-            {
-                damage = minDamage;
-            }
-            collision.gameObject.GetComponent<Bug>().Damage(damage);
-            if (generateSecondaryEffect == true)
+            tempDamage = CalculateDamage();
+            Bug bug = collision.gameObject.GetComponent<Bug>();
+            bug.Damage(tempDamage);
+            if (secondaryEffectPrefab != null && secondaryEffectSize != 0)
             {
                 Explode();
             }
             else
             {
-                collision.gameObject.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
+                bug.InvincibilityFrames(invincibilityTime);
             }
             Destroy(gameObject);
         }
     }
 
-    void Explode()
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Calculates damage based on size, and truncates the damage if it is too
+    /// high or low.
+    /// </summary>
+    /// <returns>the amount of damage to deal.</returns>
+    /// -----------------------------------------------------------------------
+    private int CalculateDamage()
     {
-        GameObject secondaryEffect = Instantiate(secondaryEffectPrefab, gameObject.transform.position, gameObject.transform.rotation);
-        secondaryEffect.GetComponent<Explosion>().owner = owner;
-        secondaryEffect.transform.localScale = gameObject.transform.localScale * secondaryEffectSize;
+        int tempDamage = Mathf.RoundToInt(charge * maxDamage);
+        tempDamage = Mathf.Min(tempDamage, maxDamage);
+        tempDamage = Mathf.Max(tempDamage, minDamage);
+        return tempDamage;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Generates an explosion with size proportional to the size of the
+    /// initial fireball. Sets the explosion's owner to the fireball's owner.
+    /// </summary>-------------------------------------------------------------
+    private void Explode()
+    {
+        GameObject explosion = Instantiate(secondaryEffectPrefab,
+            gameObject.transform.position, gameObject.transform.rotation);
+        Explosion script = explosion.GetComponent<Explosion>();
+        script.owner = owner;
+        script.charge = charge;
+        explosion.transform.localScale = gameObject.transform.localScale 
+            * secondaryEffectSize;
     }
 }

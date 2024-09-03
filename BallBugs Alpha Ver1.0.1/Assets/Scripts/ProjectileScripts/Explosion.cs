@@ -1,63 +1,64 @@
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have an explosion class that functions as intended
+//-----------------------------------------------------------------------------
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    // The colliderImmediate bool determines whether the collider is active when the
-    // Explosion is instantiated or not; set to false to account for the animation delay
-    public bool colliderImmediate = false;
+    /// <summary>--------------------------------------------------------------
+    /// Explosion is a secondary effect that is triggered when a Fireball
+    /// is destroyed. The explosion lingers for a short amount of time, and
+    /// deals damage equal to the original fireball's damage.
+    /// 
+    /// ******************************UPGRADES*********************************
+    /// 
+    /// Knockback: The explosion now knocks back enemies it comes in
+    /// contact with.
+    /// Bomb Jump: The explosion now knocks back the player that fired it and
+    /// its allies, allowing them to gain momentum from the blast without
+    /// taking any damage.
+    /// Blast Block: The explosion now knocks back enemy projectiles, granting
+    /// ownership to the explosion's owner and potentially redirecting the
+    /// projectile back at the enemy and dealing damage.
+    /// Force I, II, III, IV: Knockback force for all knockback related 
+    /// upgrades is increased by 20% per upgrade level.
+    /// 
+    /// </summary>-------------------------------------------------------------
 
-    // The colliderDeactivate bool determines whether the collider is deactivated after
-    // The explosion animation starts to recede; set to true to account for this
+    public bool colliderImmediate = false;
     public bool colliderDeactivate = true;
 
-    // The knockback bool determines whether or not the explosion will knock other
-    // Rigidbodies away
-    public bool knockback = true;
-
-    // The animationDelay float determines how much time is elapsed waiting for the
-    // Explosion animation to play out before activating the explosion collider
-    private const float animationDelay = 0.15f;
-
-    // The animationRefrain float determines how much time is elapsed waiting for the
-    // Explosion animation to play out before deactivating the explosion collider
-    private const float animationRefrain = 0.6f;
-
-    // The lifetime float determines how long the explosion lasts before being destroyed
+    private const float ANIMATION_DELAY = 0.15f;
+    private const float ANIMATION_REFRAIN = 0.6f;
     public float lifetime = 1f;
 
-    // The explosionForce float determines how much force is applied to rigidbodies that
-    // Enter the explosion's radius
+    public bool knockback = true;
+    public bool bombJump = true;
+    public bool blastBlock = true;
     public float explosionForce = 50f;
 
-    // The maximum damage dealt by the explosion
+    private int damage = 0;
     public int maxDamage = 30;
-
-    // The amount of invincibility time in seconds that this projectile gives
+    public float charge = 0f;
     public float invincibilityTime = 0.5f;
 
-    // The playerLayer int represents the layer that all player characters exist on
-    private const int playerLayer = 9;
-    // The enemy layer int represents the layer that all enemy characters exist on
-    protected const int enemyLayer = 10;
-    // The shield layer int represents the layer that all shields exist on
-    protected const int shieldLayer = 11;
+    private const int PLAYER_LAYER = 9;
+    private const int ENEMY_LAYER = 10;
+    private const int SHIELD_LAYER = 11;
 
-    // The firefly GameObject is the firefly that caused this explosion. Previously used
-    // GameObject.FindWithTag, but it wouldn't have worked with multiple fireflies
     public GameObject owner;
-
-    // The explosionCollider CircleCollider2D is the trigger collider of the explosion
     public CircleCollider2D explosionCollider;
 
-    // Private damage field for calculations
-    public int damage = 0;
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
-        FriendlyFireOff();
         Destroy(gameObject, lifetime);
         if (colliderImmediate == false)
         {
@@ -68,69 +69,117 @@ public class Explosion : MonoBehaviour
         {
             explosionCollider.enabled = true;
         }
-
         if (colliderDeactivate == true)
         {
             StartCoroutine(ColliderDeactivate());
         }
     }
 
+    //-------------------------------------------------------------------------
+    // COLLISION EVENTS
+    //-------------------------------------------------------------------------
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.attachedRigidbody != null)
         {
-            if (knockback == true)
+            if (other.gameObject.CompareTag("Projectile"))
             {
-                Vector2 thisPosition = new Vector2(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y);
-                Vector2 otherPosition = new Vector2(other.gameObject.transform.localPosition.x, other.gameObject.transform.localPosition.y);
-                Vector2 distanceVector = new Vector2(otherPosition.x - thisPosition.x, otherPosition.y - thisPosition.y);
-
-                other.attachedRigidbody.velocity = new Vector2(0, 0);
-                other.attachedRigidbody.AddForce(distanceVector.normalized * explosionForce * gameObject.transform.localScale.x);
-            }
-            // If the game object that entered the trigger is the firefly that created the explosion, they won't take damage
-            if ((other.gameObject.layer == playerLayer || other.gameObject.layer == enemyLayer) 
-                && other.gameObject.GetInstanceID() != owner.gameObject.GetInstanceID())
-            {
-                // Magic number 3.3 which is the maximum size an explosion can be. CHANGE THIS!
-                damage = Mathf.RoundToInt((gameObject.transform.localScale.x / 3.3f) * maxDamage);
-                other.gameObject.GetComponent<Bug>().Damage(damage);
-                other.gameObject.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
-            }
-            else if (other.gameObject.layer == shieldLayer && other.gameObject.GetInstanceID() != owner.gameObject.GetInstanceID())
-            {
-                // Magic number 3.3 which is the maximum size an explosion can be. CHANGE THIS!
-                damage = Mathf.RoundToInt((gameObject.transform.localScale.x / 3.3f) * maxDamage);
-                other.gameObject.GetComponent<Bug>().Shield(damage);
-                other.gameObject.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
-            }
-        }
-    }
-
-    public void FriendlyFireOff()
-    {
-        if (owner.layer == enemyLayer)
-        {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Bug");
-            for (int i = 0; i < players.Length; i++)
-            {
-                if (players[i].layer == enemyLayer)
+                if (blastBlock == true)
                 {
-                    Physics2D.IgnoreCollision(players[i].GetComponent<CircleCollider2D>(), gameObject.GetComponent<Collider2D>());
+                    owner.GetComponent<Bug>().Shield(0);
+                    Projectile projectile = 
+                        other.gameObject.GetComponent<Projectile>();
+                    Physics2D.IgnoreCollision
+                    (projectile.owner.GetComponent<CircleCollider2D>(),
+                    other, false);
+                    projectile.owner = owner;
+                    Knockback(other);
+                }
+            }
+            else if ((other.gameObject.layer == PLAYER_LAYER 
+                || other.gameObject.layer == ENEMY_LAYER))
+            {
+                Bug bug = other.gameObject.GetComponent<Bug>();
+                if (bug.defaultLayer != owner.GetComponent<Bug>().defaultLayer)
+                {
+                    if (knockback == true)
+                    {
+                        Knockback(other);
+                    }
+                    damage = Mathf.RoundToInt(charge * maxDamage);
+                    bug.Damage(damage);
+                    bug.InvincibilityFrames(invincibilityTime);
+                }
+                else
+                {
+                    if (bombJump == true)
+                    {
+                        Knockback(other);
+                    }
+                }
+            }
+            else if (other.gameObject.layer == SHIELD_LAYER)
+            {
+                Bug bug = other.gameObject.GetComponent<Bug>();
+                if (bug.defaultLayer != owner.GetComponent<Bug>().defaultLayer)
+                {
+                    damage = Mathf.RoundToInt(charge * maxDamage);
+                    bug.Shield(damage);
+                    bug.InvincibilityFrames(invincibilityTime);
                 }
             }
         }
     }
 
+    //-------------------------------------------------------------------------
+    // COROUTINES
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Delays the activation of the explosion's collider to account for the
+    /// time the animation takes to play out.
+    /// </summary>
+    /// <returns>the coroutine that re-enables the collider.</returns>
+    /// -----------------------------------------------------------------------
     IEnumerator ColliderActivate()
     {
-        yield return new WaitForSeconds(animationDelay);
+        yield return new WaitForSeconds(ANIMATION_DELAY);
         explosionCollider.enabled = true;
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Delays the activation of the explosion's collider to account for the
+    /// time the animation takes to play out.
+    /// </summary>
+    /// <returns>the coroutine that re-enables the collider.</returns>
+    /// -----------------------------------------------------------------------
     IEnumerator ColliderDeactivate()
     {
-        yield return new WaitForSeconds(animationRefrain);
+        yield return new WaitForSeconds(ANIMATION_REFRAIN);
         explosionCollider.enabled = false;
+    }
+
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Launches a given collider's attached rigidbody away from the explosion
+    /// based on the distance vector from the explosion's center to the other
+    /// collider.
+    /// </summary>
+    /// <param name="other">the collider to be knocked back.</param>
+    /// -----------------------------------------------------------------------
+    private void Knockback(Collider2D other)
+    {
+        Vector2 thisPosition = gameObject.transform.localPosition;
+        Vector2 otherPosition =
+            other.gameObject.transform.localPosition;
+        Vector2 distanceVector = new Vector2(otherPosition.x
+            - thisPosition.x, otherPosition.y - thisPosition.y);
+        other.attachedRigidbody.velocity = new Vector2(0, 0);
+        other.attachedRigidbody.AddForce(distanceVector.normalized
+            * explosionForce * gameObject.transform.localScale.x);
     }
 }

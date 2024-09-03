@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 5855492496751090346}
   - component: {fileID: 2129471492817008546}
   - component: {fileID: 2671607737614874160}
+  - component: {fileID: -1081416294023865290}
   m_Layer: 9
   m_Name: Glowworm
   m_TagString: Bug
@@ -304,7 +305,7 @@ MonoBehaviour:
   armor: 0
   shieldArmor: 0
   score: 0
-  cooldownTime: 4
+  cooldownTime: 3
   currentCharge: 0
   chargeRate: 0.25
   comboCounter: 0
@@ -322,7 +323,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   defaultLayer: 0
-  grapple: {fileID: 0}
+  grapple: {fileID: -1081416294023865290}
   grapplePos: {x: 0, y: 0}
   currentWeb: {fileID: 0}
   firePoint: {fileID: 877774665671178619}
@@ -402,7 +403,19 @@ MonoBehaviour:
     m_ActionId: d10c9f87-133e-42bb-a9f6-7a01315ad6f6
     m_ActionName: Gameplay/Attack[/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5855492496751090346}
+        m_TargetAssemblyTypeName: Bug, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: efad34b5-9647-4bfc-b9a0-bbaa83910657
     m_ActionName: Gameplay/Jump[/Keyboard/space]
   - m_PersistentCalls:
@@ -426,7 +439,19 @@ MonoBehaviour:
     m_ActionId: bd7115b9-a2ae-41c9-be18-fd29a64010cd
     m_ActionName: Menu/Escape[/Keyboard/escape]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5855492496751090346}
+        m_TargetAssemblyTypeName: Bug, Assembly-CSharp
+        m_MethodName: OnCrouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ef6ecfcb-b9e4-4a07-b5a8-ba6dc7f7f515
     m_ActionName: Gameplay/Crouch[/Keyboard/shift,/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
@@ -467,6 +492,27 @@ MonoBehaviour:
   rotationSpeed: 0.01
   healthBarForeground: {fileID: 5344470599365085083}
   healthBarBackground: {fileID: 4423068820755977093}
+--- !u!231 &-1081416294023865290
+SpringJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877774664528490533}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
+  m_DampingRatio: 0
+  m_Frequency: 10
 --- !u!1 &877774665671178618
 GameObject:
   m_ObjectHideFlags: 0

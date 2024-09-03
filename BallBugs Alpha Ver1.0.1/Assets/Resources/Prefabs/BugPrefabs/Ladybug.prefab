@@ -1095,7 +1095,7 @@ MonoBehaviour:
   armor: 0
   shieldArmor: 0
   score: 0
-  cooldownTime: 2.75
+  cooldownTime: 2
   currentCharge: 0
   chargeRate: 0.35
   comboCounter: 0

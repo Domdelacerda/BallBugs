@@ -555,6 +555,10 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     public void ChargingUp(bool shooting)
     {
         primed = shooting;
+        if (currentCharge < 0f)
+        {
+            currentCharge = 0f;
+        }
         if (currentCharge < 1f)
         {
             currentCharge += chargeRate * Time.deltaTime;
@@ -562,10 +566,6 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
             {
                 currentCharge = 1f;
             }
-        }
-        else if (currentCharge < 0f)
-        {
-            currentCharge = 0f;
         }
     }
 
@@ -654,8 +654,9 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     {
         GameObject display = Instantiate(type, gameObject.transform.position, 
             Quaternion.identity);
-        display.GetComponent<DamageDisplay>().damage = amount;
-        display.GetComponent<DamageDisplay>().owner = gameObject;
+        DamageDisplay script = display.GetComponent<DamageDisplay>();
+        script.damage = amount;
+        script.owner = gameObject;
     }
 
     /// <summary>--------------------------------------------------------------
@@ -722,7 +723,10 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     /// </summary>-------------------------------------------------------------
     public void Ungrapple()
     {
-        grapple.enabled = false;
+        if (grapple != null)
+        {
+            grapple.enabled = false;
+        }
         Destroy(currentWeb);
     }
 }

@@ -130,7 +130,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 3584
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -172,10 +172,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 3584
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 511
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -218,28 +218,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 16
+  charge: 0
   maxDamage: 45
   minDamage: 10
   comboDamage: 0
+  bounceDamage: 5
+  pierceDamage: 10
   bounces: 2
+  pierces: 1
   numProjectiles: 1
   invincibilityTime: 0.5
   lifetime: 1
-  charge: 0
   rb: {fileID: 4726494947016605314}
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 0}
   secondaryEffectSize: 1
-  generateSecondaryEffect: 0
-  invincibility: 1
   limitedLife: 0
   fixedTrajectory: 0
-  damagePerBounce: 5
-  colliderDelay: 0.25
+  colliderDelay: 0.05
   poisonDamage: 2
   poisonInterval: 1
   numPoisonIntervals: 5
   toxic: 0
-  shieldPiercing: 0
   tacticalReload: 1
   superTacticalReload: 1
+  solidCollider: {fileID: -3179412410698786184}
+  trigger: {fileID: 7776663171564745677}

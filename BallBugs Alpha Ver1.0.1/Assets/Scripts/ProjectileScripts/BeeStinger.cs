@@ -1,190 +1,258 @@
-using System.Collections;
-using System.Collections.Generic;
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a bee stinger class that functions as intended
+//-----------------------------------------------------------------------------
+
 using UnityEngine;
+using System.Collections;
 
 public class BeeStinger : Projectile
 {
-    // The amount of extra damage dealt after the bullet bounces
-    public int damagePerBounce = 5;
-    // Private damage field for calculations
+    /// <summary>--------------------------------------------------------------
+    /// Bee Stinger is a projectile that is fired by the Bee character. The
+    /// stinger deals damage based on how fast it is moving when it collides
+    /// with a player.
+    /// 
+    /// ******************************UPGRADES*********************************
+    /// 
+    /// Tactical Reload: If the owner of the stinger touches it after firing,
+    /// the stinger will be destroyed and the owner will instantly reload.
+    /// Super Tactical Reload: Upon tactical reload, the owner will also regain
+    /// however much charge the projectile was initially fired with (Requires
+    /// Tactical Reload).
+    /// 
+    /// Bouncing I, II: Increases the number of times the stinger can bounce
+    /// off terrain before disappearing by 1 per upgrade level.
+    /// Bouncing Combo: Each bounce increases the stinger's base damage by a
+    /// small amount (Requires Bouncing I).
+    /// 
+    /// Piercing I, II: Increases the number of times the stinger can pierce
+    /// through enemies by 1 per upgrade level. Stingers no longer knock back
+    /// players or enemies with this upgrade.
+    /// Piercing Combo: Each pierce increases the stinger's base damage by a
+    /// moderate amount (Requires Piercing I).
+    /// 
+    /// Poison I, II: Enemies hit by the stinger will be poisoned for a small
+    /// amount of damage over time, increasing with each upgrade level.
+    /// 
+    /// Toxic: Stingers now deal poison damage in place of regular damage, 
+    /// which ignores the armor stat of armored bugs.
+    /// 
+    /// </summary>-------------------------------------------------------------
+
     private int damage = 0;
-    // Float variable used to determine the time before the stinger has collision with bee
     public float colliderDelay = 0.25f;
-    // Collider used to check if the stinger is overlapping 
-    private Collider2D opponent;
-    // The size of the stinger used for overlapping detection
-    private const float stingerSize = 0.005f;
 
     public int poisonDamage = 0;
     public float poisonInterval = 0;
     public int numPoisonIntervals = 0;
     public bool toxic = false;
-    public bool shieldPiercing = false;
     public bool tacticalReload = false;
     public bool superTacticalReload = false;
 
-    // Start is called before the first frame update
+    public Collider2D solidCollider;
+    public Collider2D trigger;
+
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
+
     void Start()
     {
-        // Ignore collisions between the bug that fired the projectile and the projectile itself
-        Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), gameObject.GetComponent<Collider2D>());
+        if (pierces > 0)
+        {
+            solidCollider.excludeLayers = LayerMask.GetMask("Player", "Enemy");
+            trigger.includeLayers = LayerMask.GetMask("Player", "Enemy");
+        }
+        ActivateTacticalReload();
         FriendlyFireOff();
-        // Slinghsot mode uses data from 3 frames before the joystick recentered itself
+        Bug bug = owner.GetComponent<Bug>();
         if (owner.GetComponent<Bug>().slingshotMode == true)
         {
-            rb.velocity = transform.up * speed * owner.GetComponent<Bug>().currentCharge * owner.GetComponent<Bug>().joystickDrawSaveStates[2].magnitude;
+            rb.velocity = transform.up * speed * bug.currentCharge 
+                * bug.joystickDrawSaveStates[2].magnitude;
         }
-        // Manual mode uses current joystick data
         else
         {
-            rb.velocity = transform.up * speed * owner.GetComponent<Bug>().currentCharge * owner.GetComponent<Bug>().joystickDraw.magnitude;
+            rb.velocity = transform.up * speed * bug.currentCharge 
+                * bug.joystickDraw.magnitude;
         }
-
-        // Check to see if the stinger is overlapping a player or enemy on the first frame
-        Vector2 pos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        opponent = Physics2D.OverlapCircle(pos, stingerSize, LayerMask.GetMask("Player"));
-        if (opponent == null)
-        {
-            opponent = Physics2D.OverlapCircle(pos, stingerSize, LayerMask.GetMask("Enemy"));
-        }
-        if (opponent != null)
-        {
-            // Ensure that the stinger can't penetrate shields
-            if (!Physics2D.OverlapCircle(pos, stingerSize, LayerMask.GetMask("Shield")))
-            {
-                damage = Mathf.RoundToInt(maxDamage * owner.GetComponent<Bug>().currentCharge);
-                if (damage < minDamage)
-                {
-                    damage = minDamage;
-                }
-                opponent.gameObject.GetComponent<Bug>().Damage(damage);
-                opponent.gameObject.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
-                Destroy(gameObject);
-            }
-            // If the stinger spawns inside a shielded enemy: don't deal any damage, give the player
-            // their stinger back, and destroy the stinger
-            else
-            {
-                owner.GetComponent<Bug>().StopRecharge();
-                owner.GetComponent<Bug>().recharged = true;
-                if (owner.GetComponent<Bug>().bugAnimator != null)
-                {
-                    owner.GetComponent<Bug>().bugAnimator.SetBool("IsRecharged", true);
-                }
-                Destroy(gameObject);
-            }
-        }
-        // Reset bug's charge to zero
-        owner.GetComponent<Bug>().currentCharge -= 1f / numProjectiles;
+        bug.currentCharge -= 1f / numProjectiles;
     }
 
-    void Update()
-    {
-        // Tactical reload
-        if (tacticalReload == true)
-        {
-            if (Physics2D.OverlapCircle(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), 
-                stingerSize, owner.GetComponent<Bug>().defaultLayer))
-            {
-                // If the bug is currently reloading, stop it from doing so
-                owner.GetComponent<Bug>().StopRecharge();
-                owner.GetComponent<Bug>().recharged = true;
-                if (superTacticalReload == true)
-                {
-                    owner.GetComponent<Bug>().currentCharge += charge;
-                }
-                if (owner.GetComponent<Bug>().bugAnimator != null)
-                {
-                    owner.GetComponent<Bug>().bugAnimator.SetBool("IsRecharged", true);
-                }
-                Destroy(gameObject);
-            }
-        }
-    }
+    //-------------------------------------------------------------------------
+    // COLLISION EVENTS
+    //-------------------------------------------------------------------------
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // On collision with terrain
         if (collision.gameObject.CompareTag("Terrain"))
         {
             bounces--;
-            // Deal 5 extra damage per bounce
-            damage += damagePerBounce;
+            damage += bounceDamage;
         }
-        // On collision with a shield
-        else if (collision.collider.gameObject.layer == shieldLayer)
+        else if (collision.gameObject.layer == SHIELD_LAYER)
         {
-            // Shield script here
-            ShieldDeflect(collision.collider.transform, collision.relativeVelocity.magnitude);
-            // Reactivate collision between the bug that initially fired the projectile and the projectile itself
-            Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), gameObject.GetComponent<Collider2D>(), false);
+            ShieldCollision(collision.transform, collision.gameObject);
+        }
+        else if (collision.gameObject.layer == PLAYER_LAYER 
+            || collision.gameObject.layer == ENEMY_LAYER)
+        {
+            PlayerCollision(collision.gameObject.GetComponent<Bug>());
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == SHIELD_LAYER)
+        {
+            ShieldCollision(collision.transform, collision.gameObject);
+        }
+        else if (collision.gameObject.layer == PLAYER_LAYER 
+            || collision.gameObject.layer == ENEMY_LAYER)
+        {
+            if (collision.gameObject == owner)
+            {
+                TacticalReload();
+            }
+            else
+            {
+                PlayerCollision(collision.gameObject.GetComponent<Bug>());
+            }
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    // COROUTINES
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Delays the activation of tactical reload to ensure that the owner of
+    /// the projectile doesn't reload on the first frame the stinger exists.
+    /// </summary>
+    /// <param name="delayTime">the amount of time it takes for tactical reload
+    /// to activate.</param>
+    /// <returns>the coroutine that re-enables tactical reloading.</returns>
+    /// -----------------------------------------------------------------------
+    private IEnumerator TacticalReloadDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        tacticalReload = true;
+    }
+
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Calculates damage based on speed, and truncates the damage if it is too
+    /// high or low.
+    /// </summary>
+    /// <returns>the amount of damage to deal.</returns>
+    /// -----------------------------------------------------------------------
+    private int CalculateDamage()
+    {
+        int tempDamage = Mathf.RoundToInt(maxDamage * (rb.velocity.magnitude 
+            / speed));
+        tempDamage = Mathf.Min(tempDamage, maxDamage);
+        tempDamage = Mathf.Max(tempDamage, minDamage);
+        return tempDamage;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Handles a collision event with a shield, which reflects the projectile,
+    /// deals shielded damage, and grants invincibility frames.
+    /// </summary>
+    /// <param name="oldOwner">the position of the previous owner.</param>
+    /// <param name="newOwner">the new owner of the projectile to be assigned.
+    /// </param>
+    /// -----------------------------------------------------------------------
+    private void ShieldCollision(Transform oldOwner, GameObject newOwner)
+    {
+        ShieldDeflect(oldOwner, rb.velocity.magnitude);
+        ActivateTacticalReload();
+        owner = newOwner;
+        tempDamage = CalculateDamage();
+        Bug bug = owner.GetComponent<Bug>();
+        bug.Shield(damage + tempDamage);
+        bug.InvincibilityFrames(invincibilityTime);
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Handles a collision event with another bug, which deals damage to the
+    /// bug, grants invincibility frames, and poisons the bug if poison is
+    /// enabled. If the stinger's pierce count is zero, it is deleted.
+    /// deals shielded damage, and grants invincibility frames.
+    /// </summary>
+    /// <param name="bug">the bug hit by the stinger.</param>
+    /// -----------------------------------------------------------------------
+    private void PlayerCollision(Bug bug)
+    {
+        tempDamage = CalculateDamage();
+        if (toxic == true)
+        {
+            bool poisoned = bug.poisoned;
+            bug.Poison(damage + tempDamage, 0, 1);
+            if (poisoned == false)
+            {
+                bug.poisoned = false;
+            }
+        }
+        else
+        {
+            bug.Damage(damage + tempDamage);
+        }
+        if (poisonDamage != 0 && bug.invincible == false)
+        {
+            bug.Poison(poisonDamage, poisonInterval, numPoisonIntervals);
+        }
+        if (pierces <= 0)
+        {
+            Destroy(gameObject);
+        }
+        if (bug.invincible == false)
+        {
+            pierces--;
+            damage += pierceDamage;
+        }
+        bug.InvincibilityFrames(invincibilityTime);
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// If tactical reload is enabled, start the delay so that the collision
+    /// doesn't register until the stinger is fired.
+    /// </summary>-------------------------------------------------------------
+    private void ActivateTacticalReload()
+    {
+        if (tacticalReload == true)
+        {
             tacticalReload = false;
-            owner = collision.gameObject;
-            // Damage is dealt based on how fast the stinger is moving
-            int tempDamage = Mathf.RoundToInt(maxDamage * (collision.relativeVelocity.magnitude / speed));
-            // Make sure that damage doesn't exceed the maximum
-            if (tempDamage > maxDamage)
-            {
-                tempDamage = maxDamage;
-            }
-            // Make sure that the damage isn't less than the minimum
-            else if (tempDamage < minDamage)
-            {
-                tempDamage = minDamage;
-            }
-            if (shieldPiercing == true)
-            {
-                bool poisoned = collision.gameObject.GetComponent<Bug>().poisoned;
-                collision.gameObject.GetComponent<Bug>().Poison(damage + tempDamage, 0, 1);
-                if (poisoned == false)
-                {
-                    collision.gameObject.GetComponent<Bug>().poisoned = false;
-                }
-                if (poisonDamage != 0)
-                {
-                    collision.gameObject.GetComponent<Bug>().Poison(poisonDamage, poisonInterval, numPoisonIntervals);
-                }
-            }
-            else
-            {
-                owner.GetComponent<Bug>().Shield(damage + tempDamage);
-            }
-            owner.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
+            StartCoroutine(TacticalReloadDelay(colliderDelay));
         }
-        // On collision with a player
-        else if (collision.gameObject.layer == playerLayer || collision.gameObject.layer == enemyLayer)
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Reloads the owner of the stinger on contact, and if super tactical 
+    /// reload is enabled, gives them charge equal to the amount of charge the
+    /// stinger was initially fired with.
+    /// </summary>-------------------------------------------------------------
+    private void TacticalReload()
+    {
+        if (tacticalReload == true)
         {
-            // Damage is dealt based on how fast the stinger is moving
-            int tempDamage = Mathf.RoundToInt(maxDamage * (collision.relativeVelocity.magnitude / speed));
-            // Make sure that damage doesn't exceed the maximum
-            if (tempDamage > maxDamage)
+            Bug bug = owner.GetComponent<Bug>();
+            bug.StopRecharge();
+            bug.recharged = true;
+            if (superTacticalReload == true)
             {
-                tempDamage = maxDamage;
+                bug.currentCharge += charge;
+                bug.currentCharge = Mathf.Min(bug.currentCharge, 1);
             }
-            // Make sure that the damage isn't less than the minimum
-            else if (tempDamage < minDamage)
+            if (bug.bugAnimator != null)
             {
-                tempDamage = minDamage;
+                bug.bugAnimator.SetBool("IsRecharged", true);
             }
-            damage += tempDamage;
-            if (toxic == true)
-            {
-                bool poisoned = collision.gameObject.GetComponent<Bug>().poisoned;
-                collision.gameObject.GetComponent<Bug>().Poison(damage, 0, 1);
-                if (poisoned == false)
-                {
-                    collision.gameObject.GetComponent<Bug>().poisoned = false;
-                }
-            }
-            else
-            {
-                collision.gameObject.GetComponent<Bug>().Damage(damage);
-            }
-            if (poisonDamage != 0)
-            {
-                collision.gameObject.GetComponent<Bug>().Poison(poisonDamage, poisonInterval, numPoisonIntervals);
-            }
-            collision.gameObject.GetComponent<Bug>().InvincibilityFrames(invincibilityTime);
             Destroy(gameObject);
         }
     }

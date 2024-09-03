@@ -195,13 +195,12 @@ MonoBehaviour:
   colliderDelay: 0.5
   wallClimbing: 1
   gravityReductionScale: 0.1
-  splashKinematic: 1
   poisonDamage: 3
   heal: 2
   poisonInterval: 1
-  numPoisonIntervals: 1
   owner: {fileID: 0}
   collisionTransform: {fileID: 0}
+  spriteSlice: {fileID: 6498649442549560523}
   defaultMaterial: {fileID: 6200000, guid: b7af31a6d9640fa4fa86cec6d2c6984f, type: 2}
   stickyMaterial: {fileID: 6200000, guid: b9fa70044d1e4db49b3e746127a438ab, type: 2}
 --- !u!61 &1701988373727475345

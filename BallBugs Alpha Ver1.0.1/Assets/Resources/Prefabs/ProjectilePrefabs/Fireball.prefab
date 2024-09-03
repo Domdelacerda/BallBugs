@@ -51,7 +51,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -184,14 +184,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  charge: 0
   maxDamage: 30
   minDamage: 1
   comboDamage: 0
+  bounceDamage: 0
+  pierceDamage: 0
   bounces: 0
+  pierces: 0
   numProjectiles: 1
   invincibilityTime: 1
+  lifetime: 1
   rb: {fileID: 4019902479025603290}
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 1809800033275363738, guid: eb4ec1e8c6bfc7b4ebb87fbb7b3577a6, type: 3}
   secondaryEffectSize: 1.65
-  generateSecondaryEffect: 1
+  limitedLife: 0
+  fixedTrajectory: 0

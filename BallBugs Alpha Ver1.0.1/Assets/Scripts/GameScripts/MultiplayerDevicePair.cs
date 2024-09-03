@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using UnityEngine.InputSystem.XInput;
 
 public class MultiplayerDevicePair : MonoBehaviour
 {
@@ -44,7 +45,10 @@ public class MultiplayerDevicePair : MonoBehaviour
                 players[i].GetComponent<Bug>().score = SharedData.scores[i];
                 players[i].GetComponent<Bug>().scoreText.text = SharedData.scores[i].ToString();
             }
-            //if (SharedData.devices[i] is XInputController)
+            if (SharedData.devices[i] is XInputController)
+            {
+                players[i].GetComponent<Bug>().slingshotControls = false;
+            }
         }
         if (levels[SharedData.mapCode % levels.Count] != null)
         {

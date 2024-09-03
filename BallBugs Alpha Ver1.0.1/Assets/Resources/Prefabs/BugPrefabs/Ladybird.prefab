@@ -220,7 +220,7 @@ MonoBehaviour:
   armor: 0
   shieldArmor: 0
   score: 0
-  cooldownTime: 2.75
+  cooldownTime: 2
   currentCharge: 0
   chargeRate: 0.35
   comboCounter: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   segmentCount: 18
   firePoint: {fileID: 4401317044345542250}
   spotPrefab: {fileID: 9189017507892960628, guid: 663fb63dac9315844801ae4d35661906, type: 3}
-  shotDelay: 0.1
+  shotDelay: 0.05
 --- !u!114 &1745308529574463238
 MonoBehaviour:
   m_ObjectHideFlags: 0

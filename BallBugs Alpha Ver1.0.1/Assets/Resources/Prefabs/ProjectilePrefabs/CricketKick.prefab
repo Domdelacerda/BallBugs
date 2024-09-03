@@ -127,10 +127,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
+  charge: 0
   maxDamage: 45
   minDamage: 1
   comboDamage: 0
+  bounceDamage: 0
+  pierceDamage: 0
   bounces: 0
+  pierces: 0
   numProjectiles: 0
   invincibilityTime: 0
   lifetime: 0.035
@@ -138,12 +142,11 @@ MonoBehaviour:
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 4181077021575139552, guid: 406b5479defdeae42a0370e10dcb897f, type: 3}
   secondaryEffectSize: 1
-  generateSecondaryEffect: 1
-  invincibility: 0
   limitedLife: 1
   fixedTrajectory: 1
+  solidCollider: {fileID: 2994460538393983239}
   jumpForce: 15
-  charge: 0
+  deflection: 1
 --- !u!61 &2994460538393983239
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -156,7 +159,7 @@ BoxCollider2D:
   m_Material: {fileID: 6200000, guid: 318e862590cb2f6418bd3f170b320c83, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
