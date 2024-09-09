@@ -27,9 +27,9 @@ public class BeeStinger : Projectile
     /// Bouncing Combo: Each bounce increases the stinger's base damage by a
     /// small amount (Requires Bouncing I).
     /// 
-    /// Piercing I, II: Increases the number of times the stinger can pierce
-    /// through enemies by 1 per upgrade level. Stingers no longer knock back
-    /// players or enemies with this upgrade.
+    /// Piercing I, II, III: Increases the number of times the stinger can 
+    /// pierce through enemies by 1 per upgrade level. Stingers no longer knock
+    /// back players or enemies with this upgrade.
     /// Piercing Combo: Each pierce increases the stinger's base damage by a
     /// moderate amount (Requires Piercing I).
     /// 
@@ -162,7 +162,8 @@ public class BeeStinger : Projectile
 
     /// <summary>--------------------------------------------------------------
     /// Handles a collision event with a shield, which reflects the projectile,
-    /// deals shielded damage, and grants invincibility frames.
+    /// deals shielded damage, and grants invincibility frames. Shield
+    /// collisions block secondary effects, so the target is not poisoned.
     /// </summary>
     /// <param name="oldOwner">the position of the previous owner.</param>
     /// <param name="newOwner">the new owner of the projectile to be assigned.
@@ -183,7 +184,6 @@ public class BeeStinger : Projectile
     /// Handles a collision event with another bug, which deals damage to the
     /// bug, grants invincibility frames, and poisons the bug if poison is
     /// enabled. If the stinger's pierce count is zero, it is deleted.
-    /// deals shielded damage, and grants invincibility frames.
     /// </summary>
     /// <param name="bug">the bug hit by the stinger.</param>
     /// -----------------------------------------------------------------------

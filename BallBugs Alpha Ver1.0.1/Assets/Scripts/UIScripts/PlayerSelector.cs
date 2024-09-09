@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.UI;
 public class PlayerSelector : Selector
 {
     // The amount of characters currently in the game
-    private const int NUMBER_OF_BUGS = 9;
+    private const int NUMBER_OF_BUGS = 10;
     // The amount of skins for each character
     private const int NUMBER_OF_SKINS = 3;
     // The file location of the folder to search for character profile sprites
@@ -58,6 +58,10 @@ public class PlayerSelector : Selector
         characterCodes[8, 0] = "grasshopper";
         characterCodes[8, 1] = "cricket";
         characterCodes[8, 2] = "locust";
+        // Dragonfly codes
+        characterCodes[9, 0] = "dragonfly";
+        characterCodes[9, 1] = "Locked";
+        characterCodes[9, 2] = "Locked";
 
         // Locate player input manager in scene
         inputManager = (PlayerInputManager)FindObjectOfType(typeof(PlayerInputManager));

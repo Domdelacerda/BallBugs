@@ -38,7 +38,7 @@ public class Firefly : Bug, ISlingshot
             wrapped == false)
         {
             ChargingUp(true);
-            CalculateVisualizer(currentCharge);
+            CalculateVisualizer(currentCharge * joystickDraw.magnitude);
             SetVisualizerActive(true);
             for (int i = joystickDrawSaveStates.Length - 1; i > 0; i--)
             {
@@ -73,10 +73,10 @@ public class Firefly : Bug, ISlingshot
         GameObject fireball = Instantiate(fireballPrefab, firePoint.position, 
             firePoint.rotation);
         fireball.transform.localScale = fireball.transform.localScale 
-            * (1f + currentCharge);
+            * (1f + currentCharge * joystickDrawSaveStates[2].magnitude);
         Projectile script = fireball.GetComponent<Projectile>();
         script.owner = gameObject;
-        script.charge = currentCharge;
+        script.charge = currentCharge * joystickDrawSaveStates[2].magnitude;
     }
 
     //-------------------------------------------------------------------------

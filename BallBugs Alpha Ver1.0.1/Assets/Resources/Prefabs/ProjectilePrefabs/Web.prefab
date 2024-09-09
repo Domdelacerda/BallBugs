@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3622965285064995358}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.31702, y: -2.4911804, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -267,10 +267,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 13
+  charge: 0
   maxDamage: 5
   minDamage: 1
   comboDamage: 0
+  bounceDamage: 0
+  pierceDamage: 0
   bounces: 0
+  pierces: 0
   numProjectiles: 1
   invincibilityTime: 0
   lifetime: 1
@@ -278,9 +282,8 @@ MonoBehaviour:
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 0}
   secondaryEffectSize: 0
-  generateSecondaryEffect: 0
-  invincibility: 1
   limitedLife: 0
+  fixedTrajectory: 0
   strand: {fileID: -7323052425003314655}
   wrappedBug: {fileID: 9100000, guid: be814b75e181c6642b1052d9f03a8c7b, type: 2}
   wrappedTime: 1.5

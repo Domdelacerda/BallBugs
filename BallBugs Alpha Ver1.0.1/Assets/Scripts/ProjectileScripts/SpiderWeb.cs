@@ -30,7 +30,10 @@ public class SpiderWeb : Projectile
         Physics2D.IgnoreCollision(owner.GetComponent<CircleCollider2D>(), 
             gameObject.GetComponent<Collider2D>());
         Bug bug = owner.GetComponent<Bug>();
-        FriendlyFireOff();
+        if (bug.defaultLayer == ENEMY_LAYER)
+        {
+            FriendlyFireOff();
+        }
         if (bug.slingshotMode == true)
         {
             rb.velocity = transform.up * speed * bug.currentCharge 

@@ -162,15 +162,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 11
+  charge: 0
   maxDamage: 10
   minDamage: 1
   comboDamage: 1
+  bounceDamage: 0
+  pierceDamage: 0
   bounces: 1
+  pierces: 0
   numProjectiles: 5
   invincibilityTime: 0
+  lifetime: 1
   rb: {fileID: 9006560501836824790}
   owner: {fileID: 0}
   secondaryEffectPrefab: {fileID: 0}
   secondaryEffectSize: 1
-  generateSecondaryEffect: 0
-  invincibility: 0
+  limitedLife: 0
+  fixedTrajectory: 0

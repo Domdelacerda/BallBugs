@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5103025873980230995}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.5003605, y: -2.3350718, z: -11.8840885}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -186,7 +186,7 @@ MonoBehaviour:
   speed: 10
   charge: 0
   maxDamage: 30
-  minDamage: 1
+  minDamage: 15
   comboDamage: 0
   bounceDamage: 0
   pierceDamage: 0
@@ -200,4 +200,4 @@ MonoBehaviour:
   secondaryEffectPrefab: {fileID: 1809800033275363738, guid: eb4ec1e8c6bfc7b4ebb87fbb7b3577a6, type: 3}
   secondaryEffectSize: 1.65
   limitedLife: 0
-  fixedTrajectory: 0
+  fixedTrajectory: 1

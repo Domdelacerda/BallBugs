@@ -1134,8 +1134,8 @@ MonoBehaviour:
   wrapped: 0
   poisoned: 0
   regenerating: 0
-  maxHealth: 60
-  health: 60
+  maxHealth: 75
+  health: 75
   armor: 0
   shieldArmor: 0
   score: 0

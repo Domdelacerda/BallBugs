@@ -79,7 +79,8 @@ public class Fireball : Projectile
     /// -----------------------------------------------------------------------
     private int CalculateDamage()
     {
-        int tempDamage = Mathf.RoundToInt(charge * maxDamage);
+        int tempDamage = Mathf.RoundToInt(charge * (maxDamage - minDamage) 
+            + minDamage);
         tempDamage = Mathf.Min(tempDamage, maxDamage);
         tempDamage = Mathf.Max(tempDamage, minDamage);
         return tempDamage;

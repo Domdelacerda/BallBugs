@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.UI;
 public class BotSelector : Selector
 {
     // The amount of characters currently in the game
-    private const int NUMBER_OF_BUGS = 12;
+    private const int NUMBER_OF_BUGS = 13;
     // The amount of skins for each character
     private const int NUMBER_OF_SKINS = 3;
     // The file location of the folder to search for character profile sprites
@@ -66,10 +66,14 @@ public class BotSelector : Selector
         characterCodes[10, 0] = "grasshopper";
         characterCodes[10, 1] = "cricket";
         characterCodes[10, 2] = "locust";
-        // Dummybug codes
-        characterCodes[11, 0] = "dummybug";
+        // Dragonfly codes
+        characterCodes[11, 0] = "dragonfly";
         characterCodes[11, 1] = "Locked";
         characterCodes[11, 2] = "Locked";
+        // Dummybug codes
+        characterCodes[12, 0] = "dummybug";
+        characterCodes[12, 1] = "Locked";
+        characterCodes[12, 2] = "Locked";
 
         // Locate player input manager in scene
         inputManager = (PlayerInputManager)FindObjectOfType(typeof(PlayerInputManager));

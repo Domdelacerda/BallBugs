@@ -11,7 +11,7 @@ public class Rolypoly : Bug, ISlingshot
     /// <summary>--------------------------------------------------------------
     /// Rolypoly is one of the player characters in the game. Rolypoly is a 
     /// melee class that attacks by launching its own body at opponents. 
-    /// The charge meter determines rolypoly's initial velocity when it
+    /// The charge meter determines Rolypoly's initial velocity when it
     /// launches itself at enemies. When attacking, the charge meter slowly
     /// drains over time, and Rolypoly deals damage based on how much charge is
     /// remaining in the meter.

@@ -172,7 +172,7 @@ public class Bug : MonoBehaviour, IDamageable, IPoisonable, IShieldable,
     /// <param name="ctx">the action input that determines whether the player
     /// used the crouch input or not.</param>
     /// -----------------------------------------------------------------------
-    public void OnCrouch(InputAction.CallbackContext ctx)
+    public virtual void OnCrouch(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && wrapped == false)
         {

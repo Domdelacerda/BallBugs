@@ -42,6 +42,7 @@ public class Explosion : MonoBehaviour
     public float explosionForce = 50f;
 
     private int damage = 0;
+    public int minDamage = 15;
     public int maxDamage = 30;
     public float charge = 0f;
     public float invincibilityTime = 0.5f;
@@ -107,7 +108,8 @@ public class Explosion : MonoBehaviour
                     {
                         Knockback(other);
                     }
-                    damage = Mathf.RoundToInt(charge * maxDamage);
+                    damage = Mathf.RoundToInt(charge * (maxDamage - minDamage)
+                        + minDamage);
                     bug.Damage(damage);
                     bug.InvincibilityFrames(invincibilityTime);
                 }
@@ -124,7 +126,8 @@ public class Explosion : MonoBehaviour
                 Bug bug = other.gameObject.GetComponent<Bug>();
                 if (bug.defaultLayer != owner.GetComponent<Bug>().defaultLayer)
                 {
-                    damage = Mathf.RoundToInt(charge * maxDamage);
+                    damage = Mathf.RoundToInt(charge * (maxDamage - minDamage)
+                        + minDamage);
                     bug.Shield(damage);
                     bug.InvincibilityFrames(invincibilityTime);
                 }

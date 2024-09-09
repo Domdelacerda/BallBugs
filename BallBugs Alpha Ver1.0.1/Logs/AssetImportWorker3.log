@@ -15,7 +15,7 @@ C:/Users/delad/OneDrive/ballbugs/BallBugs Alpha Ver1.0.1
 -logFile
 Logs/AssetImportWorker3.log
 -srvPort
-55605
+49967
 Successfully changed project path to: C:/Users/delad/OneDrive/ballbugs/BallBugs Alpha Ver1.0.1
 C:/Users/delad/OneDrive/ballbugs/BallBugs Alpha Ver1.0.1
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -49,12 +49,12 @@ C:/Users/delad/OneDrive/ballbugs/BallBugs Alpha Ver1.0.1
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [14636] Host "[IP] 192.168.1.115 [Port] 0 [Flags] 2 [Guid] 1657739866 [EditorId] 1657739866 [Version] 1048832 [Id] WindowsEditor(7,deladom26) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [19892] Host "[IP] 137.104.144.249 [Port] 0 [Flags] 2 [Guid] 1550977006 [EditorId] 1550977006 [Version] 1048832 [Id] WindowsEditor(7,deladom26) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [14636] Host "[IP] 192.168.1.115 [Port] 0 [Flags] 2 [Guid] 1657739866 [EditorId] 1657739866 [Version] 1048832 [Id] WindowsEditor(7,deladom26) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [19892] Host "[IP] 137.104.144.249 [Port] 0 [Flags] 2 [Guid] 1550977006 [EditorId] 1550977006 [Version] 1048832 [Id] WindowsEditor(7,deladom26) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
 [Physics::Module] Initialized MultithreadedJobDispatcher with 15 workers.
-Refreshing native plugins compatible for Editor in 108.94 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 3164.50 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.10f1 (ff3792e53c62)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity 2022.3.10f1/Editor/Data/Resources/UnitySubsystems
@@ -70,49 +70,49 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity 2022.3.10f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity 2022.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity 2022.3.10f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56104
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56176
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity 2022.3.10f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
 Register platform support module: C:/Program Files/Unity 2022.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.022304 seconds.
-- Loaded All Assemblies, in  1.662 seconds
+Registered in 0.304868 seconds.
+- Loaded All Assemblies, in  9.403 seconds
 Native extension for WindowsStandalone target not found
 [usbmuxd] Start listen thread
 [usbmuxd] Listen thread started
 [usbmuxd] Send listen message
 Native extension for iOS target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.387 seconds
-Domain Reload Profiling: 2047ms
-	BeginReloadAssembly (1248ms)
+- Finished resetting the current domain, in  0.706 seconds
+Domain Reload Profiling: 10107ms
+	BeginReloadAssembly (6692ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (2ms)
-	RebuildCommonClasses (56ms)
-	RebuildNativeTypeToScriptingClass (13ms)
-	initialDomainReloadingComplete (129ms)
-	LoadAllAssembliesAndSetupDomain (212ms)
-		LoadAssemblies (1241ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (680ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (371ms)
+	LoadAllAssembliesAndSetupDomain (1649ms)
+		LoadAssemblies (6688ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (207ms)
-			TypeCache.Refresh (205ms)
-				TypeCache.ScanAssembly (183ms)
-			ScanForSourceGeneratedMonoScriptInfo (1ms)
+		AnalyzeDomain (1644ms)
+			TypeCache.Refresh (1643ms)
+				TypeCache.ScanAssembly (1236ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (388ms)
+	FinalizeReload (707ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (302ms)
+		SetupLoadedEditorAssemblies (645ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (40ms)
-			SetLoadedEditorAssemblies (9ms)
+			InitializePlatformSupportModulesInManaged (235ms)
+			SetLoadedEditorAssemblies (10ms)
 			RefreshPlugins (0ms)
 			BeforeProcessingInitializeOnLoad (3ms)
-			ProcessInitializeOnLoadAttributes (176ms)
-			ProcessInitializeOnLoadMethodAttributes (74ms)
+			ProcessInitializeOnLoadAttributes (308ms)
+			ProcessInitializeOnLoadMethodAttributes (88ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -120,8 +120,8 @@ Domain Reload Profiling: 2047ms
 ========================================================================
 Worker process is ready to serve import requests
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  1.184 seconds
-Refreshing native plugins compatible for Editor in 29.58 ms, found 4 plugins.
+- Loaded All Assemblies, in 11.797 seconds
+Refreshing native plugins compatible for Editor in 26.64 ms, found 4 plugins.
 Native extension for WindowsStandalone target not found
 Native extension for iOS target not found
 Package Manager log level set to [2]
@@ -135,47 +135,47 @@ Mono: successfully reloaded assembly
 [Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
 [Package Manager] Cannot connect to Unity Package Manager local server
-- Finished resetting the current domain, in  1.062 seconds
-Domain Reload Profiling: 2233ms
-	BeginReloadAssembly (205ms)
+- Finished resetting the current domain, in  0.911 seconds
+Domain Reload Profiling: 12703ms
+	BeginReloadAssembly (207ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (5ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (28ms)
-	RebuildCommonClasses (33ms)
-	RebuildNativeTypeToScriptingClass (9ms)
-	initialDomainReloadingComplete (60ms)
-	LoadAllAssembliesAndSetupDomain (863ms)
-		LoadAssemblies (735ms)
+		CreateAndSetChildDomain (23ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (51ms)
+	LoadAllAssembliesAndSetupDomain (11495ms)
+		LoadAssemblies (11071ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (264ms)
-			TypeCache.Refresh (224ms)
-				TypeCache.ScanAssembly (196ms)
-			ScanForSourceGeneratedMonoScriptInfo (31ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (1063ms)
+		AnalyzeDomain (567ms)
+			TypeCache.Refresh (536ms)
+				TypeCache.ScanAssembly (435ms)
+			ScanForSourceGeneratedMonoScriptInfo (24ms)
+			ResolveRequiredComponents (5ms)
+	FinalizeReload (912ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (825ms)
+		SetupLoadedEditorAssemblies (737ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (31ms)
-			SetLoadedEditorAssemblies (8ms)
+			InitializePlatformSupportModulesInManaged (29ms)
+			SetLoadedEditorAssemblies (6ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (120ms)
-			ProcessInitializeOnLoadAttributes (582ms)
-			ProcessInitializeOnLoadMethodAttributes (70ms)
-			AfterProcessingInitializeOnLoad (14ms)
-			EditorAssembliesLoaded (1ms)
+			BeforeProcessingInitializeOnLoad (123ms)
+			ProcessInitializeOnLoadAttributes (533ms)
+			ProcessInitializeOnLoadMethodAttributes (35ms)
+			AfterProcessingInitializeOnLoad (11ms)
+			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (19ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.11 seconds
-Refreshing native plugins compatible for Editor in 21.32 ms, found 4 plugins.
+		AwakeInstancesAfterBackupRestoration (6ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
+Refreshing native plugins compatible for Editor in 20.24 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4922 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 97 unused Assets / (115.9 KB). Loaded Objects now: 5371.
+Unloading 4921 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 97 unused Assets / (115.9 KB). Loaded Objects now: 5370.
 Memory consumption went from 159.9 MB to 159.8 MB.
-Total: 8.204400 ms (FindLiveObjects: 0.631400 ms CreateObjectMapping: 0.222500 ms MarkObjects: 7.108700 ms  DeleteObjects: 0.239200 ms)
+Total: 5.293800 ms (FindLiveObjects: 0.668700 ms CreateObjectMapping: 0.184900 ms MarkObjects: 4.280300 ms  DeleteObjects: 0.158700 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
@@ -191,6 +191,170 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 55403.018486 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Ladybird.prefab
+  artifactKey: Guid(175feca54f90ca84b8f5658afdf6dd9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Ladybird.prefab using Guid(175feca54f90ca84b8f5658afdf6dd9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8c0581858880ef94b0b163a39fb8de08') in 1.810716 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 143
+========================================================================
+Received Import Request.
+  Time since last request: 152.244508 seconds.
+  path: Assets/Resources/Sprites/BackgroundSprites/BackgroundFlytraps4.gif
+  artifactKey: Guid(ab84327ef14f8ec4098b49272b234355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Sprites/BackgroundSprites/BackgroundFlytraps4.gif using Guid(ab84327ef14f8ec4098b49272b234355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3862cc66cc7bb33b887aa0c50d869368') in 0.339132 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 271.297862 seconds.
+  path: Assets/Scripts/ProjectileScripts/BeeStinger.cs
+  artifactKey: Guid(d2578381c3e632c4192f1da84c04fdf0) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Scripts/ProjectileScripts/BeeStinger.cs using Guid(d2578381c3e632c4192f1da84c04fdf0) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '994905068a4fb1ab07990a8dd4c85ca3') in 0.777545 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000090 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Ladybird.prefab
+  artifactKey: Guid(175feca54f90ca84b8f5658afdf6dd9d) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Ladybird.prefab using Guid(175feca54f90ca84b8f5658afdf6dd9d) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'e9aeb6421fd9d7e6d09a7582c9d680b0') in 0.459271 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 132
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Ladybug.prefab
+  artifactKey: Guid(018dba3091ea87741a981a1bd9102b5c) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Ladybug.prefab using Guid(018dba3091ea87741a981a1bd9102b5c) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '586edd60c5db4e2e9107444ef981aca4') in 0.145687 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 132
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/AnimatorControllers/BugControllers/Ladybird.controller
+  artifactKey: Guid(1ff8105fa93278548ab36ffda9879c38) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnimatorControllers/BugControllers/Ladybird.controller using Guid(1ff8105fa93278548ab36ffda9879c38) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '772b5f988724fa8036d02df6727ab794') in 0.008556 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 8
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/AnimatorControllers/ProjectileControllers/FireExplosion.controller
+  artifactKey: Guid(1c8d8a2da92afae43b32092ce298e226) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnimatorControllers/ProjectileControllers/FireExplosion.controller using Guid(1c8d8a2da92afae43b32092ce298e226) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '581e153e8175849b6f43428208879daf') in 0.004240 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000090 seconds.
+  path: Assets/AnimatorControllers/BugControllers/Spider.controller
+  artifactKey: Guid(1775571c05738a949b2cf371f162b29d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnimatorControllers/BugControllers/Spider.controller using Guid(1775571c05738a949b2cf371f162b29d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9437d0a4101ff60777d0fd066b87bc37') in 0.005182 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 8
+========================================================================
+Received Import Request.
+  Time since last request: 0.000056 seconds.
+  path: Assets/Scripts/ProjectileScripts/MosquitoProboscis.cs
+  artifactKey: Guid(894131f08519a264cbfe87a11fc3ce9c) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Scripts/ProjectileScripts/MosquitoProboscis.cs using Guid(894131f08519a264cbfe87a11fc3ce9c) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'c0d4a9f89a888a44517dc025028a8251') in 0.029622 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/Resources/Prefabs/ProjectilePrefabs/Fireball.prefab
+  artifactKey: Guid(ffa2861e7ac889c45b1a294abf5888b4) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/ProjectilePrefabs/Fireball.prefab using Guid(ffa2861e7ac889c45b1a294abf5888b4) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'ad968714f6a6d4ef7f33b52e651088e6') in 0.140086 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 26
+========================================================================
+Received Import Request.
+  Time since last request: 0.000064 seconds.
+  path: Assets/Resources/Prefabs/ProjectilePrefabs/LightningExplosion.prefab
+  artifactKey: Guid(c94bfa23cee54d5459e74077b8a2d35d) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/ProjectilePrefabs/LightningExplosion.prefab using Guid(c94bfa23cee54d5459e74077b8a2d35d) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'bd4b4f768852576a91c27d511c07e8b7') in 0.116598 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 15
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Resources/Prefabs/ProjectilePrefabs/LadybugSpot.prefab
+  artifactKey: Guid(5738398a76e5a5a4bb6d7eba76f3007a) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/ProjectilePrefabs/LadybugSpot.prefab using Guid(5738398a76e5a5a4bb6d7eba76f3007a) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'f612f439169b17a11cc658a36a4e23e3') in 0.084563 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 11
+========================================================================
+Received Import Request.
+  Time since last request: 0.000064 seconds.
+  path: Assets/Resources/Prefabs/ProjectilePrefabs/Lightningball.prefab
+  artifactKey: Guid(9e49192e27d7dc14d8ed527388d06d84) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/ProjectilePrefabs/Lightningball.prefab using Guid(9e49192e27d7dc14d8ed527388d06d84) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'dadf64b600ea6da9a11da145df44e174') in 0.085979 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 26
+========================================================================
+Received Import Request.
+  Time since last request: 0.000140 seconds.
+  path: Assets/AnimatorControllers/ChargeBarControllers/SnailChargeMeter.controller
+  artifactKey: Guid(0f5bd0f40c62b1c4fab3f82cc78d97d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnimatorControllers/ChargeBarControllers/SnailChargeMeter.controller using Guid(0f5bd0f40c62b1c4fab3f82cc78d97d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '67de1a99bf155887a3d9667d16f322e0') in 0.014442 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 26
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/AnimatorControllers/ProjectileControllers/GlowExplosion.controller
+  artifactKey: Guid(150aaf6a47bb8c540904ac8d8bb1a761) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnimatorControllers/ProjectileControllers/GlowExplosion.controller using Guid(150aaf6a47bb8c540904ac8d8bb1a761) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b63abab079b95fd0e304f18c7ae3ca87') in 0.004647 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Resources/Sprites/BugSprites/DragonflyUncharged.gif
+  artifactKey: Guid(8d0cc5b78cce2514fbdb4b93afc4b72b) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Sprites/BugSprites/DragonflyUncharged.gif using Guid(8d0cc5b78cce2514fbdb4b93afc4b72b) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '7ddb5880548a504ec4876f1f7f61bf46') in 0.135333 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000042 seconds.
+  path: Assets/Resources/Prefabs/ProjectilePrefabs/LadybirdHeart.prefab
+  artifactKey: Guid(663fb63dac9315844801ae4d35661906) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/ProjectilePrefabs/LadybirdHeart.prefab using Guid(663fb63dac9315844801ae4d35661906) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '6091443831442f0d8c860702f97b4d53') in 0.049747 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 11
+========================================================================
+Received Import Request.
+  Time since last request: 0.000046 seconds.
+  path: Assets/Resources/Prefabs/ProjectilePrefabs/CricketKick.prefab
+  artifactKey: Guid(ce6377235a5ad73499b3f4c260bd33a3) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/ProjectilePrefabs/CricketKick.prefab using Guid(ce6377235a5ad73499b3f4c260bd33a3) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '6a05ee7ed8136814457f1f03eb1b17e2') in 0.105116 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 22
+========================================================================
+Received Import Request.
+  Time since last request: 0.000279 seconds.
+  path: Assets/Resources/Prefabs/BugPrefabs/Mosquito.prefab
+  artifactKey: Guid(1fe7ccdf1e5c01b44b48d98dfd7e76e7) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23)
+Start importing Assets/Resources/Prefabs/BugPrefabs/Mosquito.prefab using Guid(1fe7ccdf1e5c01b44b48d98dfd7e76e7) Importer(2089858483,0ecaa5967403d082aa24f35e1b516d23) Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '8c65b1d3267dc33c5f3a3b3311053faa') in 0.132867 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 132
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: The I/O operation has been aborted because of either a thread exit or an application request.
 AssetImportWorker is now disconnected from the server
