@@ -951,10 +951,10 @@ MonoBehaviour:
   grapple: {fileID: 0}
   grapplePos: {x: 0, y: 0}
   currentWeb: {fileID: 0}
-  gravityReductionScale: 0.5
   flightSpeed: 0.5
   rotationSpeed: 12
-  crouchDrag: 5
+  gravityReductionScale: 0.5
+  crouchDrag: 100
   wings: {fileID: 2241101851103970085}
   movement: {fileID: 4574349506816711705}
 --- !u!1 &5924013298584529596

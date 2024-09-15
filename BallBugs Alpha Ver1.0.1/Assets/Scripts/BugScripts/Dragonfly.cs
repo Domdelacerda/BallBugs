@@ -84,7 +84,7 @@ public class Dragonfly : Bug
                 rb.drag = crouchDrag;
             }
         }
-        else if (!ctx.performed || flying == false)
+        else
         {
             rb.drag = initialDrag;
         }
@@ -144,5 +144,6 @@ public class Dragonfly : Bug
         rb.gravityScale /= gravityReductionScale;
         flying = false;
         movement.moveSpeed = moveSpeed;
+        rb.drag = initialDrag;
     }
 }

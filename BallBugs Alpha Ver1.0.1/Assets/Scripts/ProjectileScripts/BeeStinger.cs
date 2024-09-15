@@ -65,8 +65,11 @@ public class BeeStinger : Projectile
             solidCollider.excludeLayers = LayerMask.GetMask("Player", "Enemy");
             trigger.includeLayers = LayerMask.GetMask("Player", "Enemy");
         }
+        if (tacticalReload == false)
+        {
+            FriendlyFireOff();
+        }
         ActivateTacticalReload();
-        FriendlyFireOff();
         Bug bug = owner.GetComponent<Bug>();
         if (owner.GetComponent<Bug>().slingshotMode == true)
         {

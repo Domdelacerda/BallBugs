@@ -200,4 +200,4 @@ MonoBehaviour:
   secondaryEffectPrefab: {fileID: 3253546408029164632, guid: c94bfa23cee54d5459e74077b8a2d35d, type: 3}
   secondaryEffectSize: 1.65
   limitedLife: 0
-  fixedTrajectory: 1
+  fixedTrajectory: 0

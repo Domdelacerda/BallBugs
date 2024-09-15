@@ -31,8 +31,10 @@ public class Snail : Firefly
     {
         GameObject slimeball = Instantiate(fireballPrefab, firePoint.position,
             firePoint.rotation);
-        slimeball.transform.localScale = slimeball.transform.localScale * 
-            (1f + currentCharge);
+        slimeball.transform.localScale *= 1f + currentCharge 
+            * joystickDrawSaveStates[2].magnitude;
+        slimeball.GetComponent<Rigidbody2D>().mass *= 1f + currentCharge
+            * joystickDrawSaveStates[2].magnitude * MASS_INCREASE_SCALE;
         slimeball.GetComponent<Projectile>().owner = gameObject;
         if (withdrawal == true)
         {

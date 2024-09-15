@@ -100,7 +100,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.1
+  m_Mass: 0.5
   m_LinearDrag: 0.421875
   m_AngularDrag: 0
   m_GravityScale: 1
@@ -175,7 +175,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -236,5 +236,6 @@ MonoBehaviour:
   limitedLife: 0
   fixedTrajectory: 0
   maxLifesteal: 0.5
+  lifestealPerPierce: 0.25
   solidCollider: {fileID: 6957270655138934497}
   trigger: {fileID: 3140600399576976983}

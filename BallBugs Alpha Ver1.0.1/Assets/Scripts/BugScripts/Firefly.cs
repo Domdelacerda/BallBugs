@@ -20,6 +20,7 @@ public class Firefly : Bug, ISlingshot
     public GameObject visualizer;
 
     private const float VISUALIZER_SIZE = 4.5f;
+    protected const float MASS_INCREASE_SCALE = 2.5f;
 
     //-------------------------------------------------------------------------
     // GENERATED METHODS
@@ -72,8 +73,10 @@ public class Firefly : Bug, ISlingshot
     {
         GameObject fireball = Instantiate(fireballPrefab, firePoint.position, 
             firePoint.rotation);
-        fireball.transform.localScale = fireball.transform.localScale 
-            * (1f + currentCharge * joystickDrawSaveStates[2].magnitude);
+        fireball.transform.localScale *= 1f + currentCharge 
+            * joystickDrawSaveStates[2].magnitude;
+        fireball.GetComponent<Rigidbody2D>().mass *= 1f + currentCharge
+            * joystickDrawSaveStates[2].magnitude * MASS_INCREASE_SCALE;
         Projectile script = fireball.GetComponent<Projectile>();
         script.owner = gameObject;
         script.charge = currentCharge * joystickDrawSaveStates[2].magnitude;
