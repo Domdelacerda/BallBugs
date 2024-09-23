@@ -141,6 +141,7 @@ public class MosquitoProboscis : Projectile
         owner.GetComponent<Bug>().Heal(heal);
         if (pierces <= 0)
         {
+            DetachBubbles();
             Destroy(gameObject);
         }
         if (bug.invincible == false)

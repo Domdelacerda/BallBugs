@@ -1,60 +1,69 @@
-using System.Collections;
-using System.Collections.Generic;
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have a honeydrop that players can pick up
+//-----------------------------------------------------------------------------
+
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class Honeydrop : MonoBehaviour
 {
-    // The point in-game that moves around and assigns its coordinates to the collectible
+    /// <summary>--------------------------------------------------------------
+    /// Honeydrop is a collectible item in the game that players and their
+    /// projectiles are able to interact with. If a player touches the honey
+    /// drop, they will regain a small amount of health and gain a point.
+    /// They can also collect the drop with a projectile they fire, and while
+    /// they will still gain a point, they won't regain helth.
+    /// </summary>-------------------------------------------------------------
+
     public Transform randomPoint;
+    public int health = 5;
 
-    // The playerLayer int represents the layer that all player characters exist on
-    private const int playerLayer = 9;
-    private const int enemyLayer = 10;
-    private const int shieldLayer = 11;
-
-    private void Pickup()
-    {
-        // The random point game object runs a script that places it in a new random position
-        randomPoint.GetComponent<PositionGenerator>().GeneratePosition();
-
-        // Move the collectible to its new random position
-        gameObject.transform.position = new Vector3(randomPoint.position.x, randomPoint.position.y, 0);
-    }
+    //-------------------------------------------------------------------------
+    // COLLISION EVENTS
+    //-------------------------------------------------------------------------
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == playerLayer || collision.gameObject.layer == enemyLayer || collision.gameObject.layer == shieldLayer)
+        GameObject collector = collision.gameObject;
+        if (collector.CompareTag("Bug"))
         {
-            if (collision.gameObject.GetComponent<Bug>() != null)
+            Bug bug = collector.GetComponent<Bug>();
+            if (bug == null)
             {
-                // When a player picks up the collectible, increment their score and heal them for 5 HP
-                collision.gameObject.GetComponent<Bug>().Heal(5);
-                collision.gameObject.GetComponent<Bug>().score++;
-                collision.gameObject.GetComponent<Bug>().scoreText.text = collision.gameObject.GetComponent<Bug>().score.ToString();
+                bug = collector.GetComponentInParent<Bug>();
             }
-            else
-            {
-                // When a player picks up the collectible, increment their score and heal them for 5 HP
-                collision.gameObject.GetComponentInParent<Bug>().Heal(5);
-                collision.gameObject.GetComponentInParent<Bug>().score++;
-                collision.gameObject.GetComponentInParent<Bug>().scoreText.text = collision.gameObject.GetComponent<Bug>().score.ToString();
-            }
-
-            // Perform pickup function to create a new collectible and delete the old one
-            Pickup();
+            Pickup(bug, true);
         }
-        else if (collision.gameObject.CompareTag("Projectile"))
+        else if (collector.CompareTag("Projectile"))
         {
-            // When a projectile picks up the collectible, find the owner of the projectile and
-            // increment their score
-            collision.gameObject.GetComponent<Projectile>().owner.GetComponent<Bug>().score++;
-            collision.gameObject.GetComponent<Projectile>().owner.GetComponent<Bug>().scoreText.text = 
-                collision.gameObject.GetComponent<Projectile>().owner.GetComponent<Bug>().score.ToString();
-
-            // Perform pickup function to create a new collectible and delete the old one
-            Pickup();
+            Projectile projectile = collector.GetComponent<Projectile>();
+            Bug bug = projectile.owner.GetComponent<Bug>();
+            Pickup(bug, false);
         }
+    }
+
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Picks up this honey drop and gives the benefits to the player that
+    /// picked it up. The random point variable has a new random position
+    /// generated and then sets the honey drop's position to it.
+    /// </summary>
+    /// <param name="bug">the bug that will recieve the benefits.</param>
+    /// <param name="heal">whether the bug gets healed or not.</param>
+    /// -----------------------------------------------------------------------
+    private void Pickup(Bug bug, bool heal)
+    {
+        if (heal == true)
+        {
+            bug.Heal(health);
+        }
+        bug.score++;
+        bug.scoreText.text = bug.score.ToString();
+        randomPoint.GetComponent<PositionGenerator>().GeneratePosition();
+        gameObject.transform.position = randomPoint.position;
     }
 }

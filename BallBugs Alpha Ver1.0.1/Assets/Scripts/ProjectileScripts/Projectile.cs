@@ -4,6 +4,7 @@
 // Purpose: Have a projectile class that other projectiles inherit from
 //-----------------------------------------------------------------------------
 
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -44,6 +45,7 @@ public class Projectile : MonoBehaviour
     public bool fixedTrajectory = false;
 
     private const float SHIELD_DEFLECT_POWER = 1.5f;
+    private const float BUBBLE_LIFESPAN = 5f;
 
     protected const int PLAYER_LAYER = 9;
     protected const int ENEMY_LAYER = 10;
@@ -64,6 +66,7 @@ public class Projectile : MonoBehaviour
         }
         if (limitedLife == true)
         {
+            StartCoroutine(DetachDelay());
             Destroy(gameObject, lifetime);
         }
         if (fixedTrajectory == true)
@@ -102,6 +105,7 @@ public class Projectile : MonoBehaviour
         {
             if (bounces < 0)
             {
+                DetachBubbles();
                 Destroy(gameObject);
             }
         }
@@ -148,6 +152,7 @@ public class Projectile : MonoBehaviour
             ownerBug.comboCounter++;
             if (pierces <= 0)
             {
+                DetachBubbles();
                 Destroy(gameObject);
             }
             else
@@ -156,6 +161,22 @@ public class Projectile : MonoBehaviour
                 pierces--;
             }
         }
+    }
+
+    //-------------------------------------------------------------------------
+    // COROUTINES
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Detach the bubble particles from the projectile the frame before it
+    /// is destroyed.
+    /// </summary>
+    /// <returns>coroutine that executes bubble detachment event.</returns>
+    /// -----------------------------------------------------------------------
+    public IEnumerator DetachDelay()
+    {
+        yield return new WaitForSeconds(lifetime - Time.fixedDeltaTime);
+        DetachBubbles();
     }
 
     //-------------------------------------------------------------------------
@@ -178,6 +199,23 @@ public class Projectile : MonoBehaviour
             owner.transform.position.y - other.position.y, 
             owner.transform.position.z - other.position.z);
         rb.velocity = direction.normalized * speed * SHIELD_DEFLECT_POWER;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Detach the bubble particles from the projectile so that the bubbles
+    /// don't immediately disappear when the projectile is destroyed.
+    /// </summary>-------------------------------------------------------------
+    public void DetachBubbles()
+    {
+        ParticleSystem bubbles =
+            gameObject.GetComponentInChildren<ParticleSystem>();
+        if (bubbles != null)
+        {
+            bubbles.transform.SetParent(null, false);
+            bubbles.transform.position = gameObject.transform.position;
+            bubbles.Stop();
+            Destroy(bubbles.gameObject, BUBBLE_LIFESPAN);
+        }
     }
 
     /// <summary>--------------------------------------------------------------

@@ -212,6 +212,7 @@ public class BeeStinger : Projectile
         }
         if (pierces <= 0)
         {
+            DetachBubbles();
             Destroy(gameObject);
         }
         if (bug.invincible == false)
@@ -256,6 +257,7 @@ public class BeeStinger : Projectile
             {
                 bug.bugAnimator.SetBool("IsRecharged", true);
             }
+            DetachBubbles();
             Destroy(gameObject);
         }
     }

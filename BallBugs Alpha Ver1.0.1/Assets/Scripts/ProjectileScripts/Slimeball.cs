@@ -45,6 +45,7 @@ public class Slimeball : Projectile
             }
             if (bounces < 0)
             {
+                DetachBubbles();
                 Destroy(gameObject);
             }
         }
@@ -65,6 +66,7 @@ public class Slimeball : Projectile
             Bug bug = collision.gameObject.GetComponent<Bug>();
             bug.Damage(maxDamage);
             bug.InvincibilityFrames(invincibilityTime);
+            DetachBubbles();
             Destroy(gameObject);
         }
     }

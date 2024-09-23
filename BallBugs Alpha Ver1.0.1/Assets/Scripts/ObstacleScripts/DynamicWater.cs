@@ -1,27 +1,55 @@
+//-----------------------------------------------------------------------------
+// Contributor(s): Dominic De La Cerda
+// Project: BallBugs - 2D physics-based fighting game
+// Purpose: Have dynamic water that interacts with objects that fall in it
+//-----------------------------------------------------------------------------
+
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 
 [ExecuteAlways]
 public class DynamicWater : MonoBehaviour
 {
+    /// <summary>--------------------------------------------------------------
+    /// Dynamic Water responds to the player's actions and the environment in
+    /// multiple ways. Objects that enter the water deform the surface to
+    /// create waves which propogate along the surface. Objects also create a
+    /// small splash effect on entry and exit. Any projectiles that enter the
+    /// water produce bubbles as they move. Players and projectiles that enter
+    /// the water have their gravity and drag scales modified to simulate
+    /// swimming motion and water resistance.
+    /// </summary>-------------------------------------------------------------
+    
+    public GameObject bubblesPrefab;
+    public GameObject splashPrefab;
+
+    public float playerInWaterGravityScale = 0.05f;
+    public float playerInWaterDragScale = 0.25f;
+
+    public float projectileInWaterGravityScale = 1f;
+    public float projectileInWaterDragScale = 1.5f;
+
     public SpriteShapeController controller;
     public GameObject wavePointPrefab;
     public GameObject wavePoints;
     public List<WaterSpring> springs;
+
+    [Range(1, 100)]
+    public int wavesCount = 15;
     public float springConstant = 0.5f;
     public float dampingRatio = 0.1f;
     public float spread = 0.005f;
 
-    [Range(1, 100)]
-    public int wavesCount = 15;
-
     private const int TOP_CORNERS = 2;
+    private const float BUBBLE_LIFESPAN = 5f;
 
-    private void OnValidate()
+    //-------------------------------------------------------------------------
+    // GENERATED METHODS
+    //-------------------------------------------------------------------------
+
+    private void Start()
     {
         StartCoroutine(CreateWaves());
     }
@@ -36,23 +64,108 @@ public class DynamicWater : MonoBehaviour
         Wave();
     }
 
+    //-------------------------------------------------------------------------
+    // COLLISION EVENTS
+    //-------------------------------------------------------------------------
+
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        Rigidbody2D rb = other.attachedRigidbody;
+        if (other.gameObject.CompareTag("Projectile"))
+        {
+            rb.gravityScale *= projectileInWaterGravityScale;
+            rb.drag *= projectileInWaterDragScale;
+            if (bubblesPrefab != null)
+            {
+                GameObject bubbles = Instantiate(bubblesPrefab, other.transform);
+                bubbles.GetComponent<ParticleSystem>().trigger.AddCollider
+                    (gameObject.GetComponent<Collider2D>());
+            }
+        }
+        else if (other.gameObject.CompareTag("Bug"))
+        {
+            rb.gravityScale *= playerInWaterGravityScale;
+            rb.drag *= playerInWaterDragScale;
+        }
+        if (gameObject.scene.isLoaded && splashPrefab != null)
+        {
+            GameObject splash = Instantiate(splashPrefab,
+                other.transform.position, Quaternion.identity);
+            ParticleSystem particles = splash.GetComponent<ParticleSystem>();
+            particles.trigger.AddCollider
+                (gameObject.GetComponent<Collider2D>());
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        Rigidbody2D rb = other.attachedRigidbody;
+        if (other.gameObject.CompareTag("Projectile"))
+        {
+            rb.gravityScale /= projectileInWaterGravityScale;
+            rb.drag /= projectileInWaterDragScale;
+            ParticleSystem bubbles = 
+                other.GetComponentInChildren<ParticleSystem>();
+            if (bubbles != null)
+            {
+                bubbles.Stop();
+                Destroy(bubbles.gameObject, BUBBLE_LIFESPAN);
+            }
+        }
+        else if (other.gameObject.CompareTag("Bug"))
+        {
+            rb.gravityScale /= playerInWaterGravityScale;
+            rb.drag /= playerInWaterDragScale;
+        }
+        if (gameObject.scene.isLoaded && splashPrefab != null)
+        {
+            GameObject splash = Instantiate(splashPrefab,
+                other.transform.position, Quaternion.identity);
+            ParticleSystem particles = splash.GetComponent<ParticleSystem>();
+            particles.trigger.AddCollider
+                (gameObject.GetComponent<Collider2D>());
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    // COROUTINES
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Create a new set of waves after the max number of waves is changed.
+    /// </summary>
+    /// <returns>coroutine that executes the new wave creation event.</returns>
+    /// -----------------------------------------------------------------------
     private IEnumerator CreateWaves()
     {
         foreach (Transform child in wavePoints.transform)
         {
-            StartCoroutine(Destroy(child.gameObject));
+            StartCoroutine(Remove(child.gameObject));
         }
         yield return null;
         SetWaves();
         yield return null;
     }
 
-    private IEnumerator Destroy(GameObject remove)
+    /// <summary>--------------------------------------------------------------
+    /// Destroy old waves to make room for new ones.
+    /// </summary>
+    /// <returns>coroutine that executes the wave destruction event.</returns>
+    /// -----------------------------------------------------------------------
+    private IEnumerator Remove(GameObject remove)
     {
         yield return null;
         DestroyImmediate(remove);
     }
 
+    //-------------------------------------------------------------------------
+    // PROGRAMMER-WRITTEN METHODS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Creates a new set of wave points based on the specified number of waves
+    /// and the position of the corners of the sprite shape.
+    /// </summary>-------------------------------------------------------------
     private void SetWaves()
     {
         Spline spline = controller.spline;
@@ -76,6 +189,9 @@ public class DynamicWater : MonoBehaviour
         CreateSprings(spline);
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Smoothes out adjacent waves.
+    /// </summary>-------------------------------------------------------------
     private void SmoothWaves(Spline spline, int index)
     {
         Vector3 position = spline.GetPosition(index);
@@ -100,6 +216,10 @@ public class DynamicWater : MonoBehaviour
         spline.SetRightTangent(index, rightTangent);
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Creates a new set of springs to correspond to the number of wave 
+    /// points.
+    /// </summary>-------------------------------------------------------------
     private void CreateSprings(Spline spline)
     {
         springs = new List<WaterSpring>();
@@ -115,6 +235,10 @@ public class DynamicWater : MonoBehaviour
         }
     }
 
+    /// <summary>--------------------------------------------------------------
+    /// Causes the waves to oscillate up and down as well as spread to
+    /// adjacent waves.
+    /// </summary>-------------------------------------------------------------
     private void Wave()
     {
         int count = springs.Count;

@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Firefly : Bug, ISlingshot
 {
@@ -20,7 +21,6 @@ public class Firefly : Bug, ISlingshot
     public GameObject visualizer;
 
     private const float VISUALIZER_SIZE = 4.5f;
-    protected const float MASS_INCREASE_SCALE = 2.5f;
 
     //-------------------------------------------------------------------------
     // GENERATED METHODS
@@ -62,6 +62,26 @@ public class Firefly : Bug, ISlingshot
     }
 
     //-------------------------------------------------------------------------
+    // INPUT ACTIONS
+    //-------------------------------------------------------------------------
+
+    /// <summary>--------------------------------------------------------------
+    /// Allow the player to crouch when the crouch button is pressed as long as
+    /// they aren't currently immobilized.
+    /// </summary>
+    /// <param name="ctx">the action input that determines whether the player
+    /// used the crouch input or not.</param>
+    /// -----------------------------------------------------------------------
+    public override void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed && wrapped == false)
+        {
+            Ungrapple();
+            Detonate();
+        }
+    }
+
+    //-------------------------------------------------------------------------
     // INTERFACE IMPLEMENTATIONS
     //-------------------------------------------------------------------------
 
@@ -75,8 +95,6 @@ public class Firefly : Bug, ISlingshot
             firePoint.rotation);
         fireball.transform.localScale *= 1f + currentCharge 
             * joystickDrawSaveStates[2].magnitude;
-        fireball.GetComponent<Rigidbody2D>().mass *= 1f + currentCharge
-            * joystickDrawSaveStates[2].magnitude * MASS_INCREASE_SCALE;
         Projectile script = fireball.GetComponent<Projectile>();
         script.owner = gameObject;
         script.charge = currentCharge * joystickDrawSaveStates[2].magnitude;
@@ -109,5 +127,21 @@ public class Firefly : Bug, ISlingshot
         visualizer.transform.localScale = 
             visualizer.transform.localScale.normalized 
             * (1f + charge) * VISUALIZER_SIZE;
+    }
+
+    /// <summary>--------------------------------------------------------------
+    /// Detonate all fireballs that are currently fired by this firefly.
+    /// </summary>-------------------------------------------------------------
+    void Detonate()
+    {
+        Fireball[] fireballs = FindObjectsOfType<Fireball>();
+        for (int i = 0; i < fireballs.Length; i++)
+        {
+            if (fireballs[i].owner == gameObject)
+            {
+                fireballs[i].Explode();
+                Destroy(fireballs[i].gameObject);
+            }
+        }
     }
 }

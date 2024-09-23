@@ -52,6 +52,7 @@ public class MultiplayerDevicePair : MonoBehaviour
         }
         if (levels[SharedData.mapCode % levels.Count] != null)
         {
+            levels[SharedData.mapCode % levels.Count].SetActive(true);
             levels[SharedData.mapCode % levels.Count].GetComponent<Level>().LoadLevel(players);
         }
         SharedData.players = players;

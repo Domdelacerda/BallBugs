@@ -34,6 +34,7 @@ public class Fireball : Projectile
                 {
                     Explode();
                 }
+                DetachBubbles();
                 Destroy(gameObject);
             }
         }
@@ -63,6 +64,7 @@ public class Fireball : Projectile
             {
                 bug.InvincibilityFrames(invincibilityTime);
             }
+            DetachBubbles();
             Destroy(gameObject);
         }
     }
@@ -90,7 +92,7 @@ public class Fireball : Projectile
     /// Generates an explosion with size proportional to the size of the
     /// initial fireball. Sets the explosion's owner to the fireball's owner.
     /// </summary>-------------------------------------------------------------
-    private void Explode()
+    public void Explode()
     {
         GameObject explosion = Instantiate(secondaryEffectPrefab,
             gameObject.transform.position, gameObject.transform.rotation);

@@ -99,6 +99,7 @@ public class SpiderWeb : Projectile
             bug.InvincibilityFrames(invincibilityTime);
             bug.Wrap(wrappedBug, wrappedTime * charge);
             bug.SetVelocity(ReelIn(collision.gameObject.transform.position));
+            DetachBubbles();
             Destroy(gameObject);
         }
     }

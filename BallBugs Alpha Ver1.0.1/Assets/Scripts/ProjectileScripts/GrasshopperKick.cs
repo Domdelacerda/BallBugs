@@ -48,6 +48,7 @@ public class GrasshopperKick : Projectile
         }
         if (limitedLife == true)
         {
+            DetachDelay();
             Destroy(gameObject, lifetime);
         }
         if (fixedTrajectory == true)
@@ -109,6 +110,9 @@ public class GrasshopperKick : Projectile
                     (projectile.owner.GetComponent<CircleCollider2D>(),
                     collision.gameObject.GetComponent<Collider2D>(), false);
                 projectile.owner = owner;
+                Physics2D.IgnoreCollision
+                    (projectile.owner.GetComponent<CircleCollider2D>(),
+                    collision.gameObject.GetComponent<Collider2D>());
             }
         }
         else if (collision.collider.gameObject.layer == SHIELD_LAYER)
@@ -128,6 +132,7 @@ public class GrasshopperKick : Projectile
             bug.Damage(damage);
             bug.InvincibilityFrames(invincibilityTime);
         }
+        DetachBubbles();
         Destroy(gameObject);
     }
 
